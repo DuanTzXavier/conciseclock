@@ -11,11 +11,12 @@ import android.graphics.Paint.Style;
 import android.graphics.RectF;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.util.Log;
 import android.view.MotionEvent;
+import android.view.View;
 import android.view.ViewConfiguration;
-import android.widget.ImageView;
 
-public class RangeSeekBar<T extends Number> extends ImageView {
+public class RangeSeekBar<T extends Number> extends View {
     private final Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
     private final Bitmap thumbImage = BitmapFactory.decodeResource(
             getResources(), R.drawable.seek_thumb_normal);
@@ -128,13 +129,17 @@ public class RangeSeekBar<T extends Number> extends ImageView {
         int pointerIndex;
 
         final int action = event.getAction();
-        switch (action & MotionEvent.ACTION_MASK) {
+        switch (action
+                & MotionEvent.ACTION_MASK
+                ) {
 
             case MotionEvent.ACTION_DOWN:
                 // Remember where the motion event started
                 mActivePointerId = event.getPointerId(event.getPointerCount() - 1);
                 pointerIndex = event.findPointerIndex(mActivePointerId);
                 mDownMotionX = event.getX(pointerIndex);
+
+                Log.i("point", String.valueOf(mActivePointerId) + " index  " + pointerIndex);
 
                 pressedThumb = evalPressedThumb(mDownMotionX);
 
@@ -158,6 +163,8 @@ public class RangeSeekBar<T extends Number> extends ImageView {
                         // Scroll to follow the motion event
                         pointerIndex = event.findPointerIndex(mActivePointerId);
                         final float x = event.getX(pointerIndex);
+
+                        Log.i("point", " index1  "+String.valueOf(mActivePointerId) + " index1  " + pointerIndex);
 
                         if (Math.abs(x - mDownMotionX) > mScaledTouchSlop) {
                             setPressed(true);

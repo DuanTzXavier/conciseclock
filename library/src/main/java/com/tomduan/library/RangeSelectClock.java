@@ -16,12 +16,10 @@ import android.view.View;
  */
 public class RangeSelectClock extends View {
 
-    private static final String STATE_PARENT = "parent";
-    private static final String STATE_ANGLE = "angle";
     private static final int TEXT_SIZE_DEFAULT_VALUE = 25;
     private static final int END_WHEEL_DEFAULT_VALUE = 360;
     public static final int COLOR_WHEEL_STROKE_WIDTH_DEF_VALUE = 16;
-    public static final float POINTER_RADIUS_DEF_VALUE = 8;
+    public static final float POINTER_RADIUS_DEF_VALUE = 20;
     public static final int MAX_POINT_DEF_VALUE = 100;
     public static final int START_ANGLE_DEF_VALUE = 0;
 
@@ -50,7 +48,7 @@ public class RangeSelectClock extends View {
     //HaloPoint
     private Paint mPointerHaloPaint;
     private int colorHalo;
-
+    private RectF mCenterHaloRectangle = new RectF();
     //init
     private int initPosition;
 
@@ -188,22 +186,22 @@ public class RangeSelectClock extends View {
             try {
                 activeColor = Color.parseColor(wheel_color_attr);
             } catch (IllegalArgumentException e) {
-                activeColor = Color.DKGRAY;
+                activeColor = Color.BLUE;
             }
 
         } else {
-            activeColor = Color.DKGRAY;
+            activeColor = Color.BLUE;
         }
         if (wheel_unactive_color_attr != null) {
             try {
                 unActiveColor = Color
                         .parseColor(wheel_unactive_color_attr);
             } catch (IllegalArgumentException e) {
-                unActiveColor = Color.CYAN;
+                unActiveColor = Color.BLACK;
             }
 
         } else {
-            unActiveColor = Color.CYAN;
+            unActiveColor = Color.BLACK;
         }
 
         if (pointer_color_attr != null) {
@@ -293,9 +291,9 @@ public class RangeSelectClock extends View {
         mClockRectangle.set(-mClockRadius, -mClockRadius,
                 mClockRadius, mClockRadius);
 
-//        mColorCenterHaloRectangle.set(-mColorWheelRadius / 2,
-//                -mColorWheelRadius / 2, mColorWheelRadius / 2,
-//                mColorWheelRadius / 2);
+        mCenterHaloRectangle.set(-mClockRadius / 2,
+                -mClockRadius / 2, mClockRadius / 2,
+                mClockRadius / 2);
 
         updatePointerPosition();
 
