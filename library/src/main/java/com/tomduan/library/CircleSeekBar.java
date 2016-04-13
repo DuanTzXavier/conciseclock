@@ -50,7 +50,7 @@ public class CircleSeekBar extends View {
 
     private boolean isSetStart = true;
     private boolean isInvaild = false;
-    private boolean isBlockEnd = false;
+    private boolean isBlockEnd = true;
 
     public CircleSeekBar(Context context) {
         this(context, null);
@@ -245,7 +245,7 @@ public class CircleSeekBar extends View {
             }
 
             mCurrentNumber = getSelectedValue();
-            if (!isBlockEnd){
+            if (isBlockEnd){
                 float radius = (getWidth() - getPaddingLeft() - getPaddingRight() - circleWidth) / 2;
                 mWheelCurX = calcXLocationInWheel(x, cos, radius);
                 mWheelCurY = calcYLocationInWheel(cos, radius);
@@ -261,17 +261,26 @@ public class CircleSeekBar extends View {
     }
 
     private float calculateSweep(float cos, float x) {
-        float calculate = 0;
-        if (x < getWidth() / 2){
-            //左半圆
-            calculate = (float) (Math.PI * RADIAN + Math.acos(cos) * RADIAN);
-        }else {
-            //右半圆
-            calculate = (float) (Math.PI * RADIAN - Math.acos(cos) * RADIAN);
-        }
+        float calculate;
+
+        calculate = x < (getWidth() /2) ?
+                (float) (Math.PI * RADIAN + Math.acos(cos) * RADIAN):
+                (float) (Math.PI * RADIAN - Math.acos(cos) * RADIAN);
+//        if (x < getWidth() / 2){
+//            //左半圆
+//            calculate = (float) (Math.PI * RADIAN + Math.acos(cos) * RADIAN);
+//        }else {
+//            //右半圆
+//            calculate = (float) (Math.PI * RADIAN - Math.acos(cos) * RADIAN);
+//        }
         calculate -= mStartAngle;
         calculate = calculate > 0 ? calculate : (calculate + 360);
+
+        calculate = calculate > 0 ? calculate : 0;
+        isBlockEnd = calculate < 0;
+        
         calculate = calculate > mRestAngle ? mRestAngle: calculate;
+        isBlockEnd = calculate < mRestAngle;
 
         return calculate;
     }
