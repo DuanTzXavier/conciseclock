@@ -54,7 +54,6 @@ public class MainActivity extends AppCompatActivity {
                 }
                 textView.append("时间："+bar.getCurrentNumber()+"\n");
                 bar.reSeek();
-
             }
         });
         bar.setCircleColor(Color.BLUE);

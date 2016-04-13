@@ -2,7 +2,6 @@ package com.tomduan.library;
 
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
 import android.util.AttributeSet;
@@ -51,6 +50,7 @@ public class CircleSeekBar extends View {
     private boolean isSetStart = true;
     private boolean isInvaild = false;
     private boolean isBlockEnd = true;
+    private boolean isEnd;
 
     public CircleSeekBar(Context context) {
         this(context, null);
@@ -136,11 +136,13 @@ public class CircleSeekBar extends View {
         int min = Math.min(width, height);
         setMeasuredDimension(min, min);
 
-        mSweepAngle = (float) (mCurrentNumber / mMaxNumber * 360.0);
+//        mSweepAngle = (float) (mCurrentNumber / mMaxNumber * 360.0);
         double cos = -Math.cos(Math.toRadians(mSweepAngle));
         float radius = (getMeasuredWidth() - getPaddingLeft() - getPaddingRight() - circleWidth) / 2;
         mWheelCurX = calcXLocationInWheel(mSweepAngle > 180 ? 0 : min, (float) cos, radius);
         mWheelCurY = calcYLocationInWheel((float) cos, radius);
+
+
     }
 
     private float calcXLocationInWheel(float x, float cos, float radius) {
@@ -177,78 +179,30 @@ public class CircleSeekBar extends View {
 //                Log.i("start", "s:" + mStartAngle);
 //                isSetStart = !isSetStart;
             }else {
-//                switch ((int) (mStartAngle / 90)){
-//
-//                    case 0:
-//
-//
-//
-//                        break;
-//                    case 1:
-//                        break;
-//                    case 2:
-//                        break;
-//                    case 3:
-//                        break;
-//                }
-//
-//                float calculateSweep;
-//
-//                if (x < getWidth() / 2) {
-//                    // 滑动超过180度,左半圆
-//                    calculateSweep = (float) (Math.PI * RADIAN + Math.acos(cos) * RADIAN);
-//                } else {
-//                    // 没有超过180度,右半圆
-//                    calculateSweep = (float) (Math.PI * RADIAN - Math.acos(cos) * RADIAN);
-//                }
                 mSweepAngle = calculateSweep(cos, x);
-
-//                double test;
-//                if (x < getWidth() / 2) { // 滑动超过180度
-//
-//                    test = (float) (Math.PI * RADIAN + Math.acos(cos) * RADIAN);
-//                    test = test - mStartAngle;
-//
-//                    if (test > 0){
-//
-//                        mSweepAngle = (float) (mRestAngle > test ? test: mRestAngle);
-//                        isBlockEnd = mRestAngle > test;
-//                    }else {
-//                        if ((test + 360) > 0){
-//                            mSweepAngle = (float) (mRestAngle > (test + 360) ? (test + 360): mRestAngle);
-//                            isBlockEnd = false;
-//                        }else {
-//                            isBlockEnd = true;
-//                            Log.i("1111", "1111");
-//                        }
-//                    }
-//                } else { // 没有超过180度
-//
-//                    test = Math.PI * RADIAN - Math.acos(cos) * RADIAN ;
-//                    test = test - mStartAngle;
-//                    if (test > 0){
-//                        mSweepAngle = (float) (mRestAngle > test ? test: mRestAngle);
-//                        isBlockEnd = mRestAngle > test;
-//                    }else {
-//                        if ((test + 360) > 0){
-//                            mSweepAngle = (float) (mRestAngle > (test + 360) ? (test + 360): mRestAngle);
-//                            isBlockEnd = false;
-//                        }else {
-//                            isBlockEnd = true;
-//                            Log.i("1111", "1111");
-//                        }
-////                        mSweepAngle = (float) (mRestAngle > (test + 360) ? (test + 360) : mRestAngle);
-//
-//                    }
-//                }
-                Log.i("iii", "" + mSweepAngle);
+//                Log.i("iii", "" + mSweepAngle);
             }
 
             mCurrentNumber = getSelectedValue();
+
             if (isBlockEnd){
                 float radius = (getWidth() - getPaddingLeft() - getPaddingRight() - circleWidth) / 2;
                 mWheelCurX = calcXLocationInWheel(x, cos, radius);
                 mWheelCurY = calcYLocationInWheel(cos, radius);
+            }else {
+                if (isEnd){
+                    cos = (float) -Math.cos(Math.toRadians(mInvaildStartAngle));
+                    float radius = (getWidth() - getPaddingLeft() - getPaddingRight() - circleWidth) / 2;
+                    mWheelCurX = calcXLocationInWheel(x, cos, radius);
+                    mWheelCurY = calcYLocationInWheel(cos, radius);
+                    Log.i("true", "" + mWheelCurX + ", " + mWheelCurY);
+                }else {
+                    cos = (float) -Math.cos(Math.toRadians(mStartAngle));
+                    float radius = (getWidth() - getPaddingLeft() - getPaddingRight() - circleWidth) / 2;
+                    mWheelCurX = calcXLocationInWheel(x, cos, radius);
+                    mWheelCurY = calcYLocationInWheel(cos, radius);
+                    Log.i("false", "" + mWheelCurX + ", " + mWheelCurY);
+                }
             }
             if (mChangListener != null) {
                 mChangListener.onChanged(this, mMaxNumber, mCurrentNumber);
@@ -266,21 +220,23 @@ public class CircleSeekBar extends View {
         calculate = x < (getWidth() /2) ?
                 (float) (Math.PI * RADIAN + Math.acos(cos) * RADIAN):
                 (float) (Math.PI * RADIAN - Math.acos(cos) * RADIAN);
-//        if (x < getWidth() / 2){
-//            //左半圆
-//            calculate = (float) (Math.PI * RADIAN + Math.acos(cos) * RADIAN);
-//        }else {
-//            //右半圆
-//            calculate = (float) (Math.PI * RADIAN - Math.acos(cos) * RADIAN);
-//        }
         calculate -= mStartAngle;
         calculate = calculate > 0 ? calculate : (calculate + 360);
 
         calculate = calculate > 0 ? calculate : 0;
         isBlockEnd = calculate < 0;
-        
+
+        calculate = calculate > (mRestAngle + mInvaildAngle / 3) ? 0: calculate;
+        if (calculate == 0){
+            isBlockEnd = false;
+            isEnd = false;
+            return calculate;
+        }
         calculate = calculate > mRestAngle ? mRestAngle: calculate;
+
         isBlockEnd = calculate < mRestAngle;
+        isEnd = true;
+
 
         return calculate;
     }
@@ -357,7 +313,7 @@ public class CircleSeekBar extends View {
 
     public void build(){
         initPaint();
-        postInvalidate();
+//        postInvalidate();
     }
 
     public void setmChangListener(OnSeekBarChangeListener mChangListener) {
