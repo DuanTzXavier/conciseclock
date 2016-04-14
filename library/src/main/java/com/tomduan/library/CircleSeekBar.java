@@ -15,6 +15,7 @@ import android.view.View;
 public class CircleSeekBar extends View {
 
     private static final double RADIAN = 180 / Math.PI;
+    
 
     private OnSeekBarChangeListener mChangListener;
 
@@ -125,8 +126,13 @@ public class CircleSeekBar extends View {
                     false,
                     mInvaildPaint);
         }
+        if (!isCircle()){
+            canvas.drawCircle(mWheelCurX, mWheelCurY, mPointerRadius, mPointerPaint);
+        }
+    }
 
-        canvas.drawCircle(mWheelCurX, mWheelCurY, mPointerRadius, mPointerPaint);
+    public boolean isCircle() {
+        return mInvaildAngle == 360;
     }
 
     @Override
