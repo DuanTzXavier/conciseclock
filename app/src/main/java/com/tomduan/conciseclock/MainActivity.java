@@ -52,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
                     bar.initInvaildStartAngle();
                     isFirst = false;
                 }
-                textView.append("时间："+bar.getCurrentNumber()+"\n");
+                textView.append("时间："+bar.getCurrent()+"\n");
                 bar.reSeek();
             }
         });
@@ -62,6 +62,7 @@ public class MainActivity extends AppCompatActivity {
         bar.setSelectColor(Color.RED);
         bar.setCircleWidth(32);
         bar.setRangeWidth(18);
+        bar.setStyle(CircleSeekBar.CLOCK);
         bar.build();
     }
 }

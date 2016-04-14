@@ -15,7 +15,12 @@ import android.view.View;
 public class CircleSeekBar extends View {
 
     private static final double RADIAN = 180 / Math.PI;
-    
+    private static final float TIME_UNIT = (float) 0.25;
+
+    public static final int NUMBER = 0x0000000;
+    public static final int CLOCK = 0x0000001;
+
+
 
     private OnSeekBarChangeListener mChangListener;
 
@@ -52,6 +57,8 @@ public class CircleSeekBar extends View {
     private boolean isInvaild = false;
     private boolean isBlockEnd = true;
     private boolean isEnd;
+
+    private int style = NUMBER;
 
     public CircleSeekBar(Context context) {
         this(context, null);
@@ -318,8 +325,27 @@ public class CircleSeekBar extends View {
         this.mInvaildStartAngle = mStartAngle;
     }
 
-    public int getCurrentNumber(){
-        return this.mCurrentNumber;
+    public String getCurrent(){
+        String current = "";
+
+        switch (style){
+
+            case NUMBER:
+
+                current = String.valueOf(mCurrentNumber);
+
+                break;
+
+            case CLOCK:
+
+                int min = (int) (getmAbsloutaleAngle()/TIME_UNIT);
+
+                current = min / 60 + ":" + (min % 60);
+
+                break;
+
+        }
+        return current;
     }
 
     public void build(){
@@ -342,6 +368,14 @@ public class CircleSeekBar extends View {
         this.mRestAngle -= mSweepAngle;
         this.mSweepAngle = 0;
         build();
+    }
+
+    public int getStyle() {
+        return style;
+    }
+
+    public void setStyle(int style) {
+        this.style = style;
     }
 
     public interface OnSeekBarChangeListener {
