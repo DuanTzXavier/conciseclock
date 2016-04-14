@@ -60,6 +60,8 @@ public class MainActivity extends AppCompatActivity {
         bar.setPointerColor(Color.YELLOW);
         bar.setInvaildColor(Color.GRAY);
         bar.setSelectColor(Color.RED);
+        bar.setTextColor(Color.BLACK);
+        bar.setTextSize(100);
         bar.setCircleWidth(32);
         bar.setRangeWidth(18);
         bar.setStyle(CircleSeekBar.CLOCK);

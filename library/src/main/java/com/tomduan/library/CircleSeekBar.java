@@ -3,6 +3,7 @@ package com.tomduan.library;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.Rect;
 import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -52,6 +53,13 @@ public class CircleSeekBar extends View {
     private float mPointerRadius;
 
     private Paint mEdgePaint;
+
+    private Paint mTextPaint;
+    private String text = "0:00";
+    private int textColor;
+    private int textSize;
+    private boolean showText = true;
+    private Rect bounds = new Rect();
 
     private boolean isSetStart = true;
     private boolean isInvaild = false;
@@ -103,6 +111,12 @@ public class CircleSeekBar extends View {
 
         mEdgePaint = new Paint(mSelectPaint);
         mEdgePaint.setStyle(Paint.Style.FILL);
+
+        mTextPaint = new Paint(Paint.ANTI_ALIAS_FLAG | Paint.LINEAR_TEXT_FLAG);
+        mTextPaint.setColor(textColor);
+        mTextPaint.setStyle(Paint.Style.FILL_AND_STROKE);
+        mTextPaint.setTextAlign(Paint.Align.CENTER);
+        mTextPaint.setTextSize(textSize);
     }
 
     @Override
@@ -133,8 +147,19 @@ public class CircleSeekBar extends View {
                     false,
                     mInvaildPaint);
         }
+
         if (!isCircle()){
             canvas.drawCircle(mWheelCurX, mWheelCurY, mPointerRadius, mPointerPaint);
+        }
+
+        mTextPaint.getTextBounds(text, 0, text.length(), bounds);
+
+        if (showText){
+            canvas.drawText(
+                    text,
+                    getWidth()/2,
+                    getHeight()/2,
+                    mTextPaint);
         }
     }
 
@@ -197,6 +222,7 @@ public class CircleSeekBar extends View {
             }
 
             mCurrentNumber = getSelectedValue();
+            text = getCurrent();
 
             if (isBlockEnd){
                 float radius = (getWidth() - getPaddingLeft() - getPaddingRight() - circleWidth) / 2;
@@ -326,26 +352,24 @@ public class CircleSeekBar extends View {
     }
 
     public String getCurrent(){
-        String current = "";
-
         switch (style){
 
             case NUMBER:
 
-                current = String.valueOf(mCurrentNumber);
+                text = String.valueOf(mCurrentNumber);
 
                 break;
 
             case CLOCK:
 
                 int min = (int) (getmAbsloutaleAngle()/TIME_UNIT);
-
-                current = min / 60 + ":" + (min % 60);
+                String mins = String.valueOf((min % 60) < 10 ? "0" + min % 60 : (min % 60));
+                text = min / 60 + ":" + mins;
 
                 break;
 
         }
-        return current;
+        return text;
     }
 
     public void build(){
@@ -376,6 +400,14 @@ public class CircleSeekBar extends View {
 
     public void setStyle(int style) {
         this.style = style;
+    }
+
+    public void setTextColor(int textColor) {
+        this.textColor = textColor;
+    }
+
+    public void setTextSize(int textSize) {
+        this.textSize = textSize;
     }
 
     public interface OnSeekBarChangeListener {
