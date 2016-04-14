@@ -222,7 +222,7 @@ public class CircleSeekBar extends View {
             }
 
             mCurrentNumber = getSelectedValue();
-            text = getCurrent();
+            text = isCircle() ? "设置完成" : getCurrent();
 
             if (isBlockEnd){
                 float radius = (getWidth() - getPaddingLeft() - getPaddingRight() - circleWidth) / 2;
