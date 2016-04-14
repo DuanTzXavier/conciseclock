@@ -193,13 +193,15 @@ public class CircleSeekBar extends View {
                 if (isEnd){
                     cos = (float) -Math.cos(Math.toRadians(mInvaildStartAngle));
                     float radius = (getWidth() - getPaddingLeft() - getPaddingRight() - circleWidth) / 2;
-                    mWheelCurX = calcXLocationInWheel(x, cos, radius);
+                    mWheelCurX = calcXLocationInWheel(getmAbsloutaleAngle() > 180 ? 0 : x, cos, radius);
+//                    mWheelCurX = calcXLocationInWheel(x, cos, radius);
                     mWheelCurY = calcYLocationInWheel(cos, radius);
                     Log.i("true", "" + mWheelCurX + ", " + mWheelCurY);
                 }else {
                     cos = (float) -Math.cos(Math.toRadians(mStartAngle));
                     float radius = (getWidth() - getPaddingLeft() - getPaddingRight() - circleWidth) / 2;
-                    mWheelCurX = calcXLocationInWheel(x, cos, radius);
+                    mWheelCurX = calcXLocationInWheel(getmAbsloutaleAngle() > 180 ? 0 : x, cos, radius);
+//                    mWheelCurX = calcXLocationInWheel(x, cos, radius);
                     mWheelCurY = calcYLocationInWheel(cos, radius);
                     Log.i("false", "" + mWheelCurX + ", " + mWheelCurY);
                 }
@@ -237,7 +239,6 @@ public class CircleSeekBar extends View {
         isBlockEnd = calculate < mRestAngle;
         isEnd = true;
 
-
         return calculate;
     }
 
@@ -260,11 +261,15 @@ public class CircleSeekBar extends View {
     }
 
     private int getSelectedValue() {
+        return Math.round(mMaxNumber * (getmAbsloutaleAngle() / 360));
+    }
+
+    private float getmAbsloutaleAngle(){
         mAbsloutaleAngle = mStartAngle + mSweepAngle;
         if (mAbsloutaleAngle > 360){
             mAbsloutaleAngle = mAbsloutaleAngle - 360;
         }
-        return Math.round(mMaxNumber * (mAbsloutaleAngle / 360));
+        return this.mAbsloutaleAngle;
     }
 
     public void setCircleColor(int circleColor) {
