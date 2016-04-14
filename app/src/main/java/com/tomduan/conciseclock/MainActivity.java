@@ -54,6 +54,9 @@ public class MainActivity extends AppCompatActivity {
                 }
                 textView.append("时间："+bar.getCurrent()+"\n");
                 bar.reSeek();
+                if (bar.isCircle()){
+                    yes.setEnabled(false);
+                }
             }
         });
         bar.setCircleColor(Color.BLUE);
@@ -64,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
         bar.setTextSize(100);
         bar.setCircleWidth(32);
         bar.setRangeWidth(18);
-        bar.setStyle(CircleSeekBar.CLOCK);
+        bar.setStyle(CircleSeekBar.NUMBER);
         bar.build();
     }
 }

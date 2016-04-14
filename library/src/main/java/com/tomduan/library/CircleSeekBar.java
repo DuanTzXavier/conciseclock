@@ -55,7 +55,7 @@ public class CircleSeekBar extends View {
     private Paint mEdgePaint;
 
     private Paint mTextPaint;
-    private String text = "0:00";
+    private String text = "";
     private int textColor;
     private int textSize;
     private boolean showText = true;
@@ -164,6 +164,7 @@ public class CircleSeekBar extends View {
     }
 
     public boolean isCircle() {
+        invalidate();
         return mInvaildAngle == 360;
     }
 
@@ -392,6 +393,7 @@ public class CircleSeekBar extends View {
         this.mRestAngle -= mSweepAngle;
         this.mSweepAngle = 0;
         build();
+        invalidate();
     }
 
     public int getStyle() {
@@ -400,6 +402,13 @@ public class CircleSeekBar extends View {
 
     public void setStyle(int style) {
         this.style = style;
+        switch (style){
+            case NUMBER:
+                text = "0";
+                break;
+            case CLOCK:
+                text = "0:00";
+        }
     }
 
     public void setTextColor(int textColor) {
