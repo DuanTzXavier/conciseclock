@@ -2,10 +2,10 @@ package com.tomduan.library;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.RectF;
-import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.util.TypedValue;
@@ -64,6 +64,10 @@ public class CircleSeekBar extends View {
     private boolean showText = true;
     private Rect bounds = new Rect();
 
+    private Paint mScalePaint;
+    private int scaleSize;
+    private int scaleColor;
+
     private boolean isSetStart = true;
     private boolean isInvaild = false;
     private boolean isBlockEnd = true;
@@ -121,6 +125,12 @@ public class CircleSeekBar extends View {
         mTextPaint.setStyle(Paint.Style.FILL_AND_STROKE);
         mTextPaint.setTextAlign(Paint.Align.CENTER);
         mTextPaint.setTextSize(textSize);
+
+        mScalePaint = new Paint(Paint.ANTI_ALIAS_FLAG | Paint.LINEAR_TEXT_FLAG);
+        mScalePaint.setColor(textColor);
+        mScalePaint.setStyle(Paint.Style.FILL_AND_STROKE);
+        mScalePaint.setTextAlign(Paint.Align.CENTER);
+        mScalePaint.setTextSize(40);
     }
 
     @Override
@@ -152,10 +162,6 @@ public class CircleSeekBar extends View {
                     mInvaildPaint);
         }
 
-        if (!isCircle()){
-            canvas.drawCircle(mWheelCurX, mWheelCurY, mPointerRadius, mPointerPaint);
-        }
-
         mTextPaint.getTextBounds(text, 0, text.length(), bounds);
 
         if (showText){
@@ -165,17 +171,63 @@ public class CircleSeekBar extends View {
                     getHeight()/2,
                     mTextPaint);
         }
-        String time = "";
+        String time;
 
         //绘制文字刻度
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < 8; i++) {
             canvas.save();// 保存当前画布
-            canvas.rotate(360 / 4 * i, getWidth() / 2, getHeight() / 2);
+            canvas.rotate(360 / 8 * i, getWidth() / 2, getHeight() / 2);
 
-            time = 24 / 4 * i + ":00";
+            time = 24 / 8 * i + ":00";
 
-            canvas.drawText(time, getWidth()/2, getHeight()/2 - wheelRadius +    getDpValue(circleWidth) / 2 + getDpValue(4) + textSize, mTextPaint);
+            canvas.drawText(time, getWidth()/2, getHeight()/2 - wheelRadius + getDpValue(circleWidth) / 2 + getDpValue(9) + 40, mScalePaint);
             canvas.restore();//
+        }
+
+        Paint paint = new Paint();
+//        paint.setColor(roundBackgroundColor);
+        paint.setStyle(Paint.Style.STROKE);
+        paint.setStrokeWidth(getDpValue(6));
+        paint.setAntiAlias(true);
+
+        float start = -90f;
+        float p = ((float) mMaxNumber / (float) 100);
+        float singlPoint = 3.75f;
+//        p = (int) (progress * p);
+        for (int i = 0; i < 96; i++) {
+            paint.setColor(Color.BLACK);
+            // 绘制间隔快
+            canvas.drawArc(new RectF(
+                            getPaddingLeft() + getDpValue(circleWidth) + getDpValue(6)/2,
+                            getPaddingTop() + getDpValue(circleWidth) + getDpValue(6)/2,
+                            canvas.getWidth() - getPaddingRight() - getDpValue(circleWidth) - getDpValue(6)/2,
+                            canvas.getHeight() - getPaddingBottom() - getDpValue(circleWidth) - getDpValue(6)/2),
+                    start + singlPoint - 0.3f,
+                    0.3f,
+                    false,
+                    paint);
+            start = (start + singlPoint);
+        }
+
+        paint.setStrokeWidth(getDpValue(10));
+        singlPoint = 45f;
+        for (int i = 0; i < 8; i++) {
+            paint.setColor(Color.BLACK);
+            // 绘制间隔快
+            canvas.drawArc(new RectF(
+                            getPaddingLeft() + getDpValue(circleWidth) + getDpValue(10)/2,
+                            getPaddingTop() + getDpValue(circleWidth) + getDpValue(10)/2,
+                            canvas.getWidth() - getPaddingRight() - getDpValue(circleWidth) - getDpValue(10)/2,
+                            canvas.getHeight() - getPaddingBottom() - getDpValue(circleWidth) - getDpValue(10)/2),
+                    start + singlPoint - 0.6f,
+                    0.6f,
+                    false,
+                    paint);
+            start = (start + singlPoint);
+        }
+
+        if (!isCircle()){
+            canvas.drawCircle(mWheelCurX, mWheelCurY, mPointerRadius, mPointerPaint);
         }
     }
 
