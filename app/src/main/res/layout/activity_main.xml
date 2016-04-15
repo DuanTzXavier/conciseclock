@@ -41,7 +41,8 @@
     <com.tomduan.library.CircleSeekBar
         android:id="@+id/circle_seek_bar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:padding="8dp"/>
 
     <Button
         android:id="@+id/yes"

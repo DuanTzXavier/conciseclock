@@ -5,8 +5,10 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.RectF;
+import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -17,6 +19,7 @@ public class CircleSeekBar extends View {
 
     private static final double RADIAN = 180 / Math.PI;
     private static final float TIME_UNIT = (float) 0.25;
+    private static final float FIFTEEN_TIME_UNIT = (float) 3.75;
 
     public static final int NUMBER = 0x0000000;
     public static final int CLOCK = 0x0000001;
@@ -91,23 +94,24 @@ public class CircleSeekBar extends View {
     private void initPaint() {
         mCirclePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mCirclePaint.setColor(circleColor);
-        mCirclePaint.setStrokeWidth(circleWidth);
+
+        mCirclePaint.setStrokeWidth(getDpValue(circleWidth));
         mCirclePaint.setStyle(Paint.Style.STROKE);
 
         mInvaildPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mInvaildPaint.setColor(invaildColor);
-        mInvaildPaint.setStrokeWidth(rangeWidth);
+        mInvaildPaint.setStrokeWidth(getDpValue(rangeWidth));
         mInvaildPaint.setStyle(Paint.Style.STROKE);
 
         mSelectPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mSelectPaint.setColor(selectColor);
-        mSelectPaint.setStrokeWidth(rangeWidth);
+        mSelectPaint.setStrokeWidth(getDpValue(rangeWidth));
         mSelectPaint.setStyle(Paint.Style.STROKE);
 
         mPointerPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mPointerPaint.setColor(pointerColor);
         mPointerPaint.setStyle(Paint.Style.FILL);
-        mPointerRadius = rangeWidth;
+        mPointerRadius = getDpValue(rangeWidth);
 
         mEdgePaint = new Paint(mSelectPaint);
         mEdgePaint.setStyle(Paint.Style.FILL);
@@ -121,14 +125,14 @@ public class CircleSeekBar extends View {
 
     @Override
     protected void onDraw(Canvas canvas) {
-        float left = getPaddingLeft() + circleWidth / 2;
-        float top = getPaddingTop() + circleWidth / 2;
-        float right = canvas.getWidth() - getPaddingRight() - circleWidth / 2;
-        float bottom = canvas.getHeight() - getPaddingBottom() - circleWidth / 2;
+        float left = getPaddingLeft() + getDpValue(circleWidth) / 2;
+        float top = getPaddingTop() + getDpValue(circleWidth) / 2;
+        float right = canvas.getWidth() - getPaddingRight() - getDpValue(circleWidth) / 2;
+        float bottom = canvas.getHeight() - getPaddingBottom() - getDpValue(circleWidth) / 2;
         float centerX = (left + right) / 2;
         float centerY = (top + bottom) / 2;
 
-        float wheelRadius = (canvas.getWidth() - getPaddingLeft() - getPaddingRight()) / 2 - circleWidth / 2;
+        float wheelRadius = (canvas.getWidth() - getPaddingLeft() - getPaddingRight()) / 2 - getDpValue(circleWidth) / 2;
 
         canvas.drawCircle(centerX, centerY, wheelRadius, mCirclePaint);
 
@@ -161,9 +165,25 @@ public class CircleSeekBar extends View {
                     getHeight()/2,
                     mTextPaint);
         }
+        String time = "";
+
+        //绘制文字刻度
+        for (int i = 0; i < 4; i++) {
+            canvas.save();// 保存当前画布
+            canvas.rotate(360 / 4 * i, getWidth() / 2, getHeight() / 2);
+
+            time = 24 / 4 * i + ":00";
+
+            canvas.drawText(time, getWidth()/2, getHeight()/2 - wheelRadius +    getDpValue(circleWidth) / 2 + getDpValue(4) + textSize, mTextPaint);
+            canvas.restore();//
+        }
     }
 
     public boolean isCircle() {
+
+        if (mInvaildAngle == 360){
+            text = "complete";
+        }
         invalidate();
         return mInvaildAngle == 360;
     }
@@ -174,14 +194,10 @@ public class CircleSeekBar extends View {
         int width = getDefaultSize(getSuggestedMinimumWidth(), widthMeasureSpec);
         int min = Math.min(width, height);
         setMeasuredDimension(min, min);
-
-//        mSweepAngle = (float) (mCurrentNumber / mMaxNumber * 360.0);
         double cos = -Math.cos(Math.toRadians(mSweepAngle));
-        float radius = (getMeasuredWidth() - getPaddingLeft() - getPaddingRight() - circleWidth) / 2;
+        float radius = (getMeasuredWidth() - getPaddingLeft() - getPaddingRight() - getDpValue(circleWidth)) / 2;
         mWheelCurX = calcXLocationInWheel(mSweepAngle > 180 ? 0 : min, (float) cos, radius);
         mWheelCurY = calcYLocationInWheel((float) cos, radius);
-
-
     }
 
     private float calcXLocationInWheel(float x, float cos, float radius) {
@@ -201,50 +217,32 @@ public class CircleSeekBar extends View {
 
         float x = event.getX();
         float y = event.getY();
-        if (event.getAction() == MotionEvent.ACTION_MOVE || isTouch(x, y)) {
-            // 通过当前触摸点搞到cos角度值
-            float cos = computeCos(x, y);
-            // 通过反三角函数获得角度值
-//            Log.i("cos", "s:" + Math.acos(cos) * RADIAN);
+        if (event.getAction() == MotionEvent.ACTION_MOVE || isTouch(x, y)) {// 通过当前触摸点搞到cos角度值
+            float cos = computeCos(x, y);// 通过反三角函数获得角度值
             if (isSetStart){
-                if (x < getWidth() / 2) {
-                // 滑动超过180度,左半圆
+                if (x < getWidth() / 2) {// 滑动超过180度,左半圆
                     mStartAngle = (float) (Math.PI * RADIAN + Math.acos(cos) * RADIAN);
-                } else {
-                // 没有超过180度,右半圆
+                } else {// 没有超过180度,右半圆
                     mStartAngle = (float) (Math.PI * RADIAN - Math.acos(cos) * RADIAN);
                 }
-
-//                Log.i("start", "s:" + mStartAngle);
-//                isSetStart = !isSetStart;
             }else {
                 mSweepAngle = calculateSweep(cos, x);
-//                Log.i("iii", "" + mSweepAngle);
             }
 
             mCurrentNumber = getSelectedValue();
             text = isCircle() ? "设置完成" : getCurrent();
 
             if (isBlockEnd){
-                float radius = (getWidth() - getPaddingLeft() - getPaddingRight() - circleWidth) / 2;
+                float radius = (getWidth() - getPaddingLeft() - getPaddingRight() - getDpValue(circleWidth)) / 2;
                 mWheelCurX = calcXLocationInWheel(x, cos, radius);
                 mWheelCurY = calcYLocationInWheel(cos, radius);
             }else {
-                if (isEnd){
-                    cos = (float) -Math.cos(Math.toRadians(mInvaildStartAngle));
-                    float radius = (getWidth() - getPaddingLeft() - getPaddingRight() - circleWidth) / 2;
-                    mWheelCurX = calcXLocationInWheel(getmAbsloutaleAngle() > 180 ? 0 : x, cos, radius);
-//                    mWheelCurX = calcXLocationInWheel(x, cos, radius);
-                    mWheelCurY = calcYLocationInWheel(cos, radius);
-                    Log.i("true", "" + mWheelCurX + ", " + mWheelCurY);
-                }else {
-                    cos = (float) -Math.cos(Math.toRadians(mStartAngle));
-                    float radius = (getWidth() - getPaddingLeft() - getPaddingRight() - circleWidth) / 2;
-                    mWheelCurX = calcXLocationInWheel(getmAbsloutaleAngle() > 180 ? 0 : x, cos, radius);
-//                    mWheelCurX = calcXLocationInWheel(x, cos, radius);
-                    mWheelCurY = calcYLocationInWheel(cos, radius);
-                    Log.i("false", "" + mWheelCurX + ", " + mWheelCurY);
-                }
+                cos = (float) (isEnd ? -Math.cos(Math.toRadians(mInvaildStartAngle)) : -Math.cos(Math.toRadians(mStartAngle)));
+                float radius = (getWidth() - getPaddingLeft() - getPaddingRight() - getDpValue(circleWidth)) / 2;
+                mWheelCurX = calcXLocationInWheel(getmAbsloutaleAngle() > 180 ? 0 : x, cos, radius);//考虑不完全
+                mWheelCurY = calcYLocationInWheel(cos, radius);
+                Log.i("true", "" + mWheelCurX + ", " + mWheelCurY + ", " + getMeasuredWidth());
+                //bug :右半球 mX变成左半球的mX
             }
             if (mChangListener != null) {
                 mChangListener.onChanged(this, mMaxNumber, mCurrentNumber);
@@ -258,16 +256,13 @@ public class CircleSeekBar extends View {
 
     private float calculateSweep(float cos, float x) {
         float calculate;
-
         calculate = x < (getWidth() /2) ?
                 (float) (Math.PI * RADIAN + Math.acos(cos) * RADIAN):
                 (float) (Math.PI * RADIAN - Math.acos(cos) * RADIAN);
         calculate -= mStartAngle;
         calculate = calculate > 0 ? calculate : (calculate + 360);
-
         calculate = calculate > 0 ? calculate : 0;
         isBlockEnd = calculate < 0;
-
         calculate = calculate > (mRestAngle + mInvaildAngle / 3) ? 0: calculate;
         if (calculate == 0){
             isBlockEnd = false;
@@ -275,10 +270,8 @@ public class CircleSeekBar extends View {
             return calculate;
         }
         calculate = calculate > mRestAngle ? mRestAngle: calculate;
-
         isBlockEnd = calculate < mRestAngle;
         isEnd = true;
-
         return calculate;
     }
 
@@ -354,28 +347,21 @@ public class CircleSeekBar extends View {
 
     public String getCurrent(){
         switch (style){
-
             case NUMBER:
-
                 text = String.valueOf(mCurrentNumber);
-
                 break;
-
             case CLOCK:
-
-                int min = (int) (getmAbsloutaleAngle()/TIME_UNIT);
-                String mins = String.valueOf((min % 60) < 10 ? "0" + min % 60 : (min % 60));
-                text = min / 60 + ":" + mins;
-
+                int min = (int) (getmAbsloutaleAngle()/FIFTEEN_TIME_UNIT);
+//                String mins = String.valueOf((min % 60) < 10 ? "0" + min % 60 : (min % 60));
+                String mins = String.valueOf(min % 4 < 1 ? "00" : (min % 4) * 15);
+                text = min / 4 + ":" + mins;
                 break;
-
         }
         return text;
     }
 
     public void build(){
         initPaint();
-//        postInvalidate();
     }
 
     public void setmChangListener(OnSeekBarChangeListener mChangListener) {
@@ -421,5 +407,10 @@ public class CircleSeekBar extends View {
 
     public interface OnSeekBarChangeListener {
         void onChanged(CircleSeekBar seekbar, int maxValue, int curValue);
+    }
+
+
+    private float getDpValue(float w) {
+        return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, w, getContext().getResources().getDisplayMetrics());
     }
 }
