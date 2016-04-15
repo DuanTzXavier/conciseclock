@@ -34,7 +34,7 @@ public class CircleSeekBar extends View {
     private float mRestAngle = 360;
     private float mAbsloutaleAngle;
     private float mStartAngle;
-    private float mSweepAngle;
+    private float mSweepAngle = 0;
     private float mInvaildStartAngle = 0;
     private float mInvaildAngle = 0;
     private float mWheelCurX;
@@ -233,11 +233,11 @@ public class CircleSeekBar extends View {
 
     public boolean isCircle() {
 
-        if (mInvaildAngle == 360){
+        if (mInvaildAngle > 359.50){
             text = "complete";
         }
         invalidate();
-        return mInvaildAngle == 360;
+        return mInvaildAngle > 359.50;
     }
 
     @Override
@@ -282,7 +282,7 @@ public class CircleSeekBar extends View {
             }
 
             mCurrentNumber = getSelectedValue();
-            text = isCircle() ? "设置完成" : getCurrent();
+            text = isCircle() ? "complete" : getCurrent();
 
             if (isBlockEnd){
                 float radius = (getWidth() - getPaddingLeft() - getPaddingRight() - getDpValue(circleWidth)) / 2;
@@ -425,7 +425,9 @@ public class CircleSeekBar extends View {
     }
 
     public void reSeek(){
-        isInvaild = true;
+        if (!isSetStart){
+            isInvaild = true;
+        }
         this.mInvaildAngle += mSweepAngle;
         this.mStartAngle += mSweepAngle;
         this.mRestAngle -= mSweepAngle;
