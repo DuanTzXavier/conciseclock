@@ -6,6 +6,8 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.RectF;
+import android.os.Bundle;
+import android.os.Parcelable;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.util.TypedValue;
@@ -23,6 +25,19 @@ public class CircleSeekBar extends View {
     private static final double RADIAN = 180 / Math.PI;
     private static final float TIME_UNIT = (float) 0.25;
     private static final float FIFTEEN_TIME_UNIT = (float) 3.75;
+
+    //Instance
+//    private static final String CLICK_LSNR = "click listener";
+//    private static final String CHANGE_LSNR = "change listener";
+//    private static final String ARCS = "arc list";
+//    private static final String COLORS = "color list";
+//    private static final String INVAILD_ANG = "invaild angle";
+//    private static final String INVAILD_START_ANG = "invaild start angle";
+//    private static final String START_ANG = "start angle";
+//    private static final String SWEEP_ANG = "sweep angle";
+//    private static final String STYLE = "style";
+//    private static final String WHEELX_ANG = "wheel x angle";
+//    private static final String WHEELY_ANG = "wheel y angle";
 
     public static final int NUMBER = 0x0000000;
     public static final int CLOCK = 0x0000001;
@@ -457,6 +472,62 @@ public class CircleSeekBar extends View {
 //        Log.i("aaaa", absAngle + "");
         return absAngle;
     }
+
+    //Save&RestoreInstance
+//    @Override
+//    protected Parcelable onSaveInstanceState() {
+//        Bundle bundle = new Bundle();
+//        bundle.putParcelable(INATANCE_STATE, super.onSaveInstanceState());
+//        bundle.putInt(INSTANCE_MAX_PROCESS, mMaxProcess);
+//        bundle.putInt(INSTANCE_CUR_PROCESS, mCurProcess);
+//        bundle.putInt(INSTANCE_REACHED_COLOR, mReachedColor);
+//        bundle.putFloat(INSTANCE_REACHED_WIDTH, mReachedWidth);
+//        bundle.putBoolean(INSTANCE_REACHED_CORNER_ROUND, isHasReachedCornerRound);
+//        bundle.putInt(INSTANCE_UNREACHED_COLOR, mUnreachedColor);
+//        bundle.putFloat(INSTANCE_UNREACHED_WIDTH, mUnreachedWidth);
+//        bundle.putInt(INSTANCE_POINTER_COLOR, mPointerColor);
+//        bundle.putFloat(INSTANCE_POINTER_RADIUS, mPointerRadius);
+//        bundle.putBoolean(INSTANCE_POINTER_SHADOW, isHasPointerShadow);
+//        bundle.putFloat(INSTANCE_POINTER_SHADOW_RADIUS, mPointerShadowRadius);
+//        bundle.putBoolean(INSTANCE_WHEEL_SHADOW, isHasWheelShadow);
+//        bundle.putFloat(INSTANCE_WHEEL_SHADOW_RADIUS, mPointerShadowRadius);
+//        bundle.putBoolean(INSTANCE_WHEEL_HAS_CACHE, isHasCache);
+//        bundle.putBoolean(INSTANCE_WHEEL_CAN_TOUCH, isCanTouch);
+//        bundle.putByte();
+//        return bundle;
+//    }
+//
+//    @Override
+//    protected void onRestoreInstanceState(Parcelable state) {
+//        if (state instanceof Bundle) {
+//            Bundle bundle = (Bundle) state;
+//            super.onRestoreInstanceState(bundle.getParcelable(INATANCE_STATE));
+//            mMaxProcess = bundle.getInt(INSTANCE_MAX_PROCESS);
+//            mCurProcess = bundle.getInt(INSTANCE_CUR_PROCESS);
+//            mReachedColor = bundle.getInt(INSTANCE_REACHED_COLOR);
+//            mReachedWidth = bundle.getFloat(INSTANCE_REACHED_WIDTH);
+//            isHasReachedCornerRound = bundle.getBoolean(INSTANCE_REACHED_CORNER_ROUND);
+//            mUnreachedColor = bundle.getInt(INSTANCE_UNREACHED_COLOR);
+//            mUnreachedWidth = bundle.getFloat(INSTANCE_UNREACHED_WIDTH);
+//            mPointerColor = bundle.getInt(INSTANCE_POINTER_COLOR);
+//            mPointerRadius = bundle.getFloat(INSTANCE_POINTER_RADIUS);
+//            isHasPointerShadow = bundle.getBoolean(INSTANCE_POINTER_SHADOW);
+//            mPointerShadowRadius = bundle.getFloat(INSTANCE_POINTER_SHADOW_RADIUS);
+//            isHasWheelShadow = bundle.getBoolean(INSTANCE_WHEEL_SHADOW);
+//            mPointerShadowRadius = bundle.getFloat(INSTANCE_WHEEL_SHADOW_RADIUS);
+//            isHasCache = bundle.getBoolean(INSTANCE_WHEEL_HAS_CACHE);
+//            isCanTouch = bundle.getBoolean(INSTANCE_WHEEL_CAN_TOUCH);
+//            initPaints();
+//        } else {
+//            super.onRestoreInstanceState(state);
+//        }
+//
+//        if (mChangListener != null) {
+//            mChangListener.onChanged(this, mMaxProcess, mCurProcess);
+//        }
+//    }
+
+
 
     public void setCircleColor(int circleColor) {
         this.circleColor = circleColor;
