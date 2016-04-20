@@ -387,6 +387,14 @@ public class CircleSeekBar extends View {
         }
     }
 
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent event) {
+        if (getParent() != null && event.getAction() == MotionEvent.ACTION_DOWN) {
+            getParent().requestDisallowInterceptTouchEvent(true);
+        }
+        return super.dispatchTouchEvent(event);
+    }
+
     private float calculateSweep(float cos, float x) {
         float calculate;
         calculate = x < (getWidth() /2) ?
@@ -517,8 +525,8 @@ public class CircleSeekBar extends View {
         return this.mSweepAngle;
     }
 
-    public void reSeek(){
-        if (!isSetStart){
+    public void reSeek() {
+        if (!isSetStart) {
             isInvaild = true;
 
             if (mSweepAngle > 0){
@@ -542,7 +550,7 @@ public class CircleSeekBar extends View {
 
     public void setStyle(int style) {
         this.style = style;
-        switch (style){
+        switch (style) {
             case NUMBER:
                 text = "0";
                 break;

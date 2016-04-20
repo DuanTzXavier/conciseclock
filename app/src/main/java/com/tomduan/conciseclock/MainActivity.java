@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver;
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -16,6 +17,7 @@ import com.tomduan.library.RangeSeekBar;
 public class MainActivity extends AppCompatActivity {
 
     private boolean isFirst = true;
+    CircleSeekBar bar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
 //        layout.addView(seekBar);
 
 
-        final CircleSeekBar bar = (CircleSeekBar) findViewById(R.id.circle_seek_bar);
+        bar = (CircleSeekBar) findViewById(R.id.circle_seek_bar);
         final Button yes = (Button) findViewById(R.id.yes);
         final TextView textView = (TextView) findViewById(R.id.text);
         yes.setOnClickListener(new View.OnClickListener() {
