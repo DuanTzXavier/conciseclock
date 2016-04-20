@@ -12,6 +12,9 @@ import android.util.TypedValue;
 import android.view.MotionEvent;
 import android.view.View;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by tomduan on 16-4-12.
  */
@@ -75,6 +78,13 @@ public class CircleSeekBar extends View {
 
     private int style = NUMBER;
 
+    private List<Arc> arcs = new ArrayList<>();
+
+    private List<Integer> colors = new ArrayList<>();
+
+    private float tempCos = 0;
+    private float tempX = 0;
+
     public CircleSeekBar(Context context) {
         this(context, null);
 
@@ -93,6 +103,8 @@ public class CircleSeekBar extends View {
 //        initPaints();
         initPaint();
 //        initClock();
+
+        arcs.clear();
     }
 
     private void initPaint() {
@@ -154,13 +166,15 @@ public class CircleSeekBar extends View {
                     mSelectPaint);
         }
 
-        if (isInvaild){
-            canvas.drawArc(new RectF(left, top, right, bottom),
-                    mInvaildStartAngle - 90,
-                    mInvaildAngle,
-                    false,
-                    mInvaildPaint);
-        }
+        drawInvaildArc(canvas, new RectF(left, top, right, bottom));
+
+//        if (isInvaild){
+//            canvas.drawArc(new RectF(left, top, right, bottom),
+//                    mInvaildStartAngle - 90,
+//                    mInvaildAngle,
+//                    false,
+//                    mInvaildPaint);
+//        }
 
         mTextPaint.getTextBounds(text, 0, text.length(), bounds);
 
@@ -231,6 +245,57 @@ public class CircleSeekBar extends View {
         }
     }
 
+    private void drawInvaildArc(Canvas canvas, RectF rectF) {
+
+        if (colors.size() != arcs.size()){
+            Log.i("error", "color.size != arcs.size");
+            return;
+        }
+
+        for (int i = 0;i < arcs.size();i++){
+
+            mInvaildPaint.setColor(colors.get(i));
+
+            if (checkIsOnTouchArc(arcs.get(i))){
+                mInvaildPaint.setStrokeWidth(getDpValue((float) (rangeWidth * 1.5)));
+            }else {
+                mInvaildPaint.setStrokeWidth(getDpValue(rangeWidth));
+            }
+
+
+            canvas.drawArc(rectF,
+                    arcs.get(i).getStartArc() - 90,
+                    arcs.get(i).getSweepArc(),
+                    false,
+                    mInvaildPaint);
+        }
+    }
+
+    private boolean checkIsOnTouchArc(Arc arc){
+        float start = arc.getStartArc();
+        float sweep = arc.getSweepArc();
+        float ontouch = getTouchedAbsAngle();
+
+        start = start > 360 ? start - 360 : start;
+
+        Log.i("sss", ""+ start + "  " + sweep);
+
+        if (start + sweep > 360){
+            if (ontouch > start || ontouch < start + sweep - 360){
+                return true;
+            }else{
+                return false;
+            }
+
+        }else {
+            if (ontouch > start && ontouch < start + sweep){
+                return true;
+            }else {
+                return false;
+            }
+        }
+    }
+
     public boolean isCircle() {
 
         if (mInvaildAngle > 359.50){
@@ -271,6 +336,9 @@ public class CircleSeekBar extends View {
         float y = event.getY();
         if (event.getAction() == MotionEvent.ACTION_MOVE || isTouch(x, y)) {// 通过当前触摸点搞到cos角度值
             float cos = computeCos(x, y);// 通过反三角函数获得角度值
+
+            tempCos = cos;
+            tempX = x;
             if (isSetStart){
                 if (x < getWidth() / 2) {// 滑动超过180度,左半圆
                     mStartAngle = (float) (Math.PI * RADIAN + Math.acos(cos) * RADIAN);
@@ -357,6 +425,18 @@ public class CircleSeekBar extends View {
         return this.mAbsloutaleAngle;
     }
 
+    private float getTouchedAbsAngle(){
+        float absAngle ;
+
+        if (tempX < getWidth() / 2) {// 滑动超过180度,左半圆
+            absAngle = (float) (Math.PI * RADIAN + Math.acos(tempCos) * RADIAN);
+        } else {// 没有超过180度,右半圆
+            absAngle = (float) (Math.PI * RADIAN - Math.acos(tempCos) * RADIAN);
+        }
+//        Log.i("aaaa", absAngle + "");
+        return absAngle;
+    }
+
     public void setCircleColor(int circleColor) {
         this.circleColor = circleColor;
     }
@@ -427,7 +507,14 @@ public class CircleSeekBar extends View {
     public void reSeek(){
         if (!isSetStart){
             isInvaild = true;
+
+            if (mSweepAngle > 0){
+                arcs.add(new Arc(mStartAngle, mSweepAngle));
+                invaildColor = invaildColor - 101010;
+                colors.add(invaildColor);
+            }
         }
+
         this.mInvaildAngle += mSweepAngle;
         this.mStartAngle += mSweepAngle;
         this.mRestAngle -= mSweepAngle;

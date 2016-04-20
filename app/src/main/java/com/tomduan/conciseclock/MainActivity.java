@@ -1,5 +1,6 @@
 package com.tomduan.conciseclock;
 
+import android.content.BroadcastReceiver;
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -59,9 +60,11 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+
+
         bar.setCircleColor(Color.BLUE);
         bar.setPointerColor(Color.YELLOW);
-        bar.setInvaildColor(Color.GRAY);
+        bar.setInvaildColor(Color.GREEN);
         bar.setSelectColor(Color.RED);
         bar.setTextColor(Color.BLACK);
         bar.setTextSize(80);
