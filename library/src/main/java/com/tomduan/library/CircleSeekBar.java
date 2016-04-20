@@ -30,6 +30,7 @@ public class CircleSeekBar extends View {
 
 
     private OnSeekBarChangeListener mChangListener;
+    private ClickListener clickListener;
 
     private int mMaxNumber = 100;
     private int mCurrentNumber = 10;
@@ -256,7 +257,7 @@ public class CircleSeekBar extends View {
 
             mInvaildPaint.setColor(colors.get(i));
 
-            if (checkIsOnTouchArc(arcs.get(i))){
+            if (arcs.get(i).istouched()){
                 mInvaildPaint.setStrokeWidth(getDpValue((float) (rangeWidth * 1.5)));
             }else {
                 mInvaildPaint.setStrokeWidth(getDpValue(rangeWidth));
@@ -339,6 +340,18 @@ public class CircleSeekBar extends View {
 
             tempCos = cos;
             tempX = x;
+
+            for (int i = 0;i < arcs.size();i++){
+                if (checkIsOnTouchArc(arcs.get(i))){
+                    arcs.get(i).setIstouched(true);
+                    if (clickListener != null){
+                        clickListener.clicked(i);
+                    }
+                }else {
+                    arcs.get(i).setIstouched(false);
+                }
+            }
+
             if (isSetStart){
                 if (x < getWidth() / 2) {// 滑动超过180度,左半圆
                     mStartAngle = (float) (Math.PI * RADIAN + Math.acos(cos) * RADIAN);
@@ -550,6 +563,13 @@ public class CircleSeekBar extends View {
         void onChanged(CircleSeekBar seekbar, int maxValue, int curValue);
     }
 
+    public interface ClickListener{
+        void clicked(int position);
+    }
+
+    public void setClickListener(ClickListener listener){
+        this.clickListener = listener;
+    }
 
     private float getDpValue(float w) {
         return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, w, getContext().getResources().getDisplayMetrics());
