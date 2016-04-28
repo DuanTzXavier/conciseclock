@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -10,44 +10,48 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.tomduan.conciseclock.MainActivity">
 
-    <RelativeLayout
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
 
-        <com.tomduan.library.CircleSeekBar
-            android:id="@+id/circle_seek_bar"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="700dp"
-            android:padding="8dp"/>
+            android:layout_height="match_parent">
 
-        <Button
-            android:id="@+id/yes"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="确认"
-            android:layout_below="@+id/circle_seek_bar"/>
-        <TextView
-            android:id="@+id/text"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@+id/yes"/>
+            <com.tomduan.library.CircleSeekBar
+                android:id="@+id/circle_seek_bar"
+                android:layout_width="match_parent"
+                android:layout_height="200000dp"
+                android:padding="8dp"/>
 
-    </RelativeLayout>
+            <Button
+                android:id="@+id/yes"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="确认"
+                android:layout_below="@+id/circle_seek_bar"/>
+            <TextView
+                android:id="@+id/text"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/yes"/>
 
-    <!--<TextView-->
+        </RelativeLayout>
+
+        <!--<TextView-->
         <!--android:id="@+id/min"-->
         <!--android:layout_width="wrap_content"-->
         <!--android:layout_height="wrap_content"-->
         <!--android:text="Hello World!" />-->
 
-    <!--<TextView-->
+        <!--<TextView-->
         <!--android:id="@+id/max"-->
         <!--android:layout_width="wrap_content"-->
         <!--android:layout_height="wrap_content"-->
         <!--android:layout_alignParentRight="true"/>-->
 
-    <!--<LinearLayout-->
+        <!--<LinearLayout-->
         <!--android:id="@+id/view"-->
         <!--android:layout_width="match_parent"-->
         <!--android:layout_height="match_parent"-->
@@ -55,16 +59,20 @@
         <!--android:orientation="vertical">-->
 
         <!--<com.tomduan.library.RangeSelectClock-->
-            <!--android:id="@+id/picker"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_centerInParent="true"-->
-            <!--app:max="24" />-->
+        <!--android:id="@+id/picker"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_centerInParent="true"-->
+        <!--app:max="24" />-->
 
-    <!--</LinearLayout>-->
-
-
+        <!--</LinearLayout>-->
 
 
+    </ScrollView>
 
-</ScrollView>
+
+
+
+
+
+</RelativeLayout>

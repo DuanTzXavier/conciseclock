@@ -158,7 +158,7 @@ public class CircleSeekBar extends View {
         mScalePaint.setColor(textColor);
         mScalePaint.setStyle(Paint.Style.FILL_AND_STROKE);
         mScalePaint.setTextAlign(Paint.Align.CENTER);
-        mScalePaint.setTextSize(40);
+        mScalePaint.setTextSize(20);
     }
 
     @Override
@@ -210,7 +210,7 @@ public class CircleSeekBar extends View {
 
             time = 24 / 8 * i + ":00";
 
-            canvas.drawText(time, getWidth()/2, getHeight()/2 - wheelRadius + getDpValue(circleWidth) / 2 + getDpValue(9) + 40, mScalePaint);
+            canvas.drawText(time, getWidth()/2, getHeight()/2 - wheelRadius + getDpValue(circleWidth) / 2 + getDpValue(9) + 20, mScalePaint);
             canvas.restore();//
         }
 
