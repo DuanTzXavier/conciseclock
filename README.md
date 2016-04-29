@@ -1,5 +1,5 @@
 # conciseclock
-This is custom can set start circle seekbar. 
+This is custom can set start circle seekbar.
 
 ![](https://github.com/DuanTzXavier/conciseclock/blob/master/optimized.gif)
 

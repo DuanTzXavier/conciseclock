@@ -313,11 +313,6 @@ public class CircleSeekBar extends View {
     }
 
     public boolean isCircle() {
-
-        if (mInvaildAngle > 359.50){
-            text = "complete";
-        }
-        invalidate();
         return mInvaildAngle > 359.50;
     }
 
@@ -378,12 +373,14 @@ public class CircleSeekBar extends View {
             }
 
             mCurrentNumber = getSelectedValue();
-            text = isCircle() ? "complete" : getCurrent();
+
 
             if (isBlockEnd){
                 float radius = (getWidth() - getPaddingLeft() - getPaddingRight() - getDpValue(circleWidth)) / 2;
                 mWheelCurX = calcXLocationInWheel(x, cos, radius);
                 mWheelCurY = calcYLocationInWheel(cos, radius);
+
+                text = isCircle() ? "complete" : getCurrent();
             }else {
                 cos = (float) (isEnd ? -Math.cos(Math.toRadians(mInvaildStartAngle)) : -Math.cos(Math.toRadians(mStartAngle)));
                 float radius = (getWidth() - getPaddingLeft() - getPaddingRight() - getDpValue(circleWidth)) / 2;
@@ -636,6 +633,10 @@ public class CircleSeekBar extends View {
 
     public void setTextSize(int textSize) {
         this.textSize = textSize;
+    }
+
+    public void setCenterText(String text){
+        this.text = text;
     }
 
     public interface OnSeekBarChangeListener {

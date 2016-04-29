@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <com.tomduan.library.CircleSeekBar
+                android:id="@+id/circle_seek_bar"
+                android:layout_width="match_parent"
+                android:layout_height="200000dp"
+                android:padding="8dp"/>
+
+            <EditText
+                android:id="@+id/message"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/circle_seek_bar"
+                android:hint="message"/>
+            <Button
+                android:id="@+id/yes"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="确认"
+                android:layout_below="@+id/message"/>
+            <TextView
+                android:id="@+id/text_v"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/yes"/>
+
+        </RelativeLayout>
+
+    </ScrollView>
+
+</LinearLayout>
