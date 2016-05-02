@@ -322,10 +322,12 @@ public class CircleSeekBar extends View {
         int width = getDefaultSize(getSuggestedMinimumWidth(), widthMeasureSpec);
         int min = Math.min(width, height);
         setMeasuredDimension(min, min);
-        double cos = -Math.cos(Math.toRadians(mSweepAngle));
-        float radius = (getMeasuredWidth() - getPaddingLeft() - getPaddingRight() - getDpValue(circleWidth)) / 2;
-        mWheelCurX = calcXLocationInWheel(mSweepAngle > 180 ? 0 : min, (float) cos, radius);
-        mWheelCurY = calcYLocationInWheel((float) cos, radius);
+        if (isSetStart){
+            double cos = -Math.cos(Math.toRadians(mSweepAngle));
+            float radius = (getMeasuredWidth() - getPaddingLeft() - getPaddingRight() - getDpValue(circleWidth)) / 2;
+            mWheelCurX = calcXLocationInWheel(mSweepAngle > 180 ? 0 : min, (float) cos, radius);
+            mWheelCurY = calcYLocationInWheel((float) cos, radius);
+        }
     }
 
     private float calcXLocationInWheel(float x, float cos, float radius) {
@@ -469,62 +471,6 @@ public class CircleSeekBar extends View {
 //        Log.i("aaaa", absAngle + "");
         return absAngle;
     }
-
-    //Save&RestoreInstance
-//    @Override
-//    protected Parcelable onSaveInstanceState() {
-//        Bundle bundle = new Bundle();
-//        bundle.putParcelable(INATANCE_STATE, super.onSaveInstanceState());
-//        bundle.putInt(INSTANCE_MAX_PROCESS, mMaxProcess);
-//        bundle.putInt(INSTANCE_CUR_PROCESS, mCurProcess);
-//        bundle.putInt(INSTANCE_REACHED_COLOR, mReachedColor);
-//        bundle.putFloat(INSTANCE_REACHED_WIDTH, mReachedWidth);
-//        bundle.putBoolean(INSTANCE_REACHED_CORNER_ROUND, isHasReachedCornerRound);
-//        bundle.putInt(INSTANCE_UNREACHED_COLOR, mUnreachedColor);
-//        bundle.putFloat(INSTANCE_UNREACHED_WIDTH, mUnreachedWidth);
-//        bundle.putInt(INSTANCE_POINTER_COLOR, mPointerColor);
-//        bundle.putFloat(INSTANCE_POINTER_RADIUS, mPointerRadius);
-//        bundle.putBoolean(INSTANCE_POINTER_SHADOW, isHasPointerShadow);
-//        bundle.putFloat(INSTANCE_POINTER_SHADOW_RADIUS, mPointerShadowRadius);
-//        bundle.putBoolean(INSTANCE_WHEEL_SHADOW, isHasWheelShadow);
-//        bundle.putFloat(INSTANCE_WHEEL_SHADOW_RADIUS, mPointerShadowRadius);
-//        bundle.putBoolean(INSTANCE_WHEEL_HAS_CACHE, isHasCache);
-//        bundle.putBoolean(INSTANCE_WHEEL_CAN_TOUCH, isCanTouch);
-//        bundle.putByte();
-//        return bundle;
-//    }
-//
-//    @Override
-//    protected void onRestoreInstanceState(Parcelable state) {
-//        if (state instanceof Bundle) {
-//            Bundle bundle = (Bundle) state;
-//            super.onRestoreInstanceState(bundle.getParcelable(INATANCE_STATE));
-//            mMaxProcess = bundle.getInt(INSTANCE_MAX_PROCESS);
-//            mCurProcess = bundle.getInt(INSTANCE_CUR_PROCESS);
-//            mReachedColor = bundle.getInt(INSTANCE_REACHED_COLOR);
-//            mReachedWidth = bundle.getFloat(INSTANCE_REACHED_WIDTH);
-//            isHasReachedCornerRound = bundle.getBoolean(INSTANCE_REACHED_CORNER_ROUND);
-//            mUnreachedColor = bundle.getInt(INSTANCE_UNREACHED_COLOR);
-//            mUnreachedWidth = bundle.getFloat(INSTANCE_UNREACHED_WIDTH);
-//            mPointerColor = bundle.getInt(INSTANCE_POINTER_COLOR);
-//            mPointerRadius = bundle.getFloat(INSTANCE_POINTER_RADIUS);
-//            isHasPointerShadow = bundle.getBoolean(INSTANCE_POINTER_SHADOW);
-//            mPointerShadowRadius = bundle.getFloat(INSTANCE_POINTER_SHADOW_RADIUS);
-//            isHasWheelShadow = bundle.getBoolean(INSTANCE_WHEEL_SHADOW);
-//            mPointerShadowRadius = bundle.getFloat(INSTANCE_WHEEL_SHADOW_RADIUS);
-//            isHasCache = bundle.getBoolean(INSTANCE_WHEEL_HAS_CACHE);
-//            isCanTouch = bundle.getBoolean(INSTANCE_WHEEL_CAN_TOUCH);
-//            initPaints();
-//        } else {
-//            super.onRestoreInstanceState(state);
-//        }
-//
-//        if (mChangListener != null) {
-//            mChangListener.onChanged(this, mMaxProcess, mCurProcess);
-//        }
-//    }
-
-
 
     public void setCircleColor(int circleColor) {
         this.circleColor = circleColor;
