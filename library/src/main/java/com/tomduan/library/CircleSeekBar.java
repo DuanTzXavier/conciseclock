@@ -600,4 +600,13 @@ public class CircleSeekBar extends View {
     private float getDpValue(float w) {
         return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, w, getContext().getResources().getDisplayMetrics());
     }
+
+    public void isRestWhole(boolean isAll){
+        if (isAll){
+            this.mSweepAngle = this.mRestAngle;
+        }else {
+            this.mSweepAngle = 0;
+        }
+
+    }
 }

@@ -4,6 +4,8 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -19,7 +21,7 @@ import butterknife.OnClick;
 /**
  * Created by tomduan on 16-4-29.
  */
-public class UsageActivity extends AppCompatActivity implements CircleSeekBar.ClickListener {
+public class UsageActivity extends AppCompatActivity implements CircleSeekBar.ClickListener, CompoundButton.OnCheckedChangeListener {
 
     @Bind(R.id.circle_seek_bar)
     CircleSeekBar mSeekBar;
@@ -27,6 +29,8 @@ public class UsageActivity extends AppCompatActivity implements CircleSeekBar.Cl
     TextView log;
     @Bind(R.id.message)
     EditText leaveMessage;
+    @Bind(R.id.isRest)
+    CheckBox mIsRest;
 
     private boolean isFirst = true;
     private String startTime = "";
@@ -37,7 +41,7 @@ public class UsageActivity extends AppCompatActivity implements CircleSeekBar.Cl
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_usage);
         ButterKnife.bind(this);
-
+        mIsRest.setOnCheckedChangeListener(this);
         initSeekBar();
     }
 
@@ -82,5 +86,10 @@ public class UsageActivity extends AppCompatActivity implements CircleSeekBar.Cl
                 messages.get(position).getMessage();
 
         mSeekBar.setCenterText(text);
+    }
+
+    @Override
+    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        mSeekBar.setIsSetStart(isChecked);
     }
 }

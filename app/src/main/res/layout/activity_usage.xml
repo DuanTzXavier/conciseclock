@@ -11,10 +11,24 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
+            <TextView
+                android:id="@+id/guide"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"/>
+
+            <CheckBox
+                android:id="@+id/isRest"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:text="rest of all"/>
+
             <com.tomduan.library.CircleSeekBar
                 android:id="@+id/circle_seek_bar"
                 android:layout_width="match_parent"
                 android:layout_height="200000dp"
+                android:layout_below="@+id/guide"
                 android:padding="8dp"/>
 
             <EditText
@@ -27,7 +41,7 @@
                 android:id="@+id/yes"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="确认"
+                android:text="add"
                 android:layout_below="@+id/message"/>
             <TextView
                 android:id="@+id/text_v"

@@ -9,7 +9,6 @@ This is custom can set start circle seekbar.
 * Number
 * Clock(defualt)
 
-
 ### Function(defualt)
 
 #### boolean
