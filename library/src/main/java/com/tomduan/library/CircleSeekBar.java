@@ -26,19 +26,6 @@ public class CircleSeekBar extends View {
     private static final float TIME_UNIT = (float) 0.25;
     private static final float FIFTEEN_TIME_UNIT = (float) 3.75;
 
-    //Instance
-//    private static final String CLICK_LSNR = "click listener";
-//    private static final String CHANGE_LSNR = "change listener";
-//    private static final String ARCS = "arc list";
-//    private static final String COLORS = "color list";
-//    private static final String INVAILD_ANG = "invaild angle";
-//    private static final String INVAILD_START_ANG = "invaild start angle";
-//    private static final String START_ANG = "start angle";
-//    private static final String SWEEP_ANG = "sweep angle";
-//    private static final String STYLE = "style";
-//    private static final String WHEELX_ANG = "wheel x angle";
-//    private static final String WHEELY_ANG = "wheel y angle";
-
     public static final int NUMBER = 0x0000000;
     public static final int CLOCK = 0x0000001;
 
