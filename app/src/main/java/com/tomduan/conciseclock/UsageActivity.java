@@ -36,6 +36,8 @@ public class UsageActivity extends AppCompatActivity implements CircleSeekBar.Cl
     private String startTime = "";
     private List<Item> messages = new ArrayList<>();
 
+    private boolean isAddMessage = false;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -90,6 +92,6 @@ public class UsageActivity extends AppCompatActivity implements CircleSeekBar.Cl
 
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-        mSeekBar.setIsSetStart(isChecked);
+        mSeekBar.isRestWhole(isChecked);
     }
 }

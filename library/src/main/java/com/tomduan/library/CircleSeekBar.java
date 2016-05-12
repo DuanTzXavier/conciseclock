@@ -91,6 +91,7 @@ public class CircleSeekBar extends View {
     private boolean isInvaild = false;
     private boolean isBlockEnd = true;
     private boolean isEnd;
+    private boolean isCanSet = true;
 
     private int style = NUMBER;
 
@@ -100,6 +101,8 @@ public class CircleSeekBar extends View {
 
     private float tempCos = 0;
     private float tempX = 0;
+
+    private float lastAngle = 0;
 
     public CircleSeekBar(Context context) {
         this(context, null);
@@ -256,7 +259,7 @@ public class CircleSeekBar extends View {
             start = (start + singlPoint);
         }
 
-        if (!isCircle()){
+        if (!isCircle() && isCanSet){
             canvas.drawCircle(mWheelCurX, mWheelCurY, mPointerRadius, mPointerPaint);
         }
     }
@@ -347,7 +350,7 @@ public class CircleSeekBar extends View {
 
         float x = event.getX();
         float y = event.getY();
-        if (event.getAction() == MotionEvent.ACTION_MOVE || isTouch(x, y)) {// 通过当前触摸点搞到cos角度值
+        if ((event.getAction() == MotionEvent.ACTION_MOVE || isTouch(x, y)) && isCanSet) {// 通过当前触摸点搞到cos角度值
             float cos = computeCos(x, y);// 通过反三角函数获得角度值
 
             tempCos = cos;
@@ -603,10 +606,18 @@ public class CircleSeekBar extends View {
 
     public void isRestWhole(boolean isAll){
         if (isAll){
+            this.lastAngle = this.mSweepAngle;
             this.mSweepAngle = this.mRestAngle;
+            isCanSet = !isAll;
         }else {
-            this.mSweepAngle = 0;
+            this.mSweepAngle = this.lastAngle;
+            isCanSet = !isAll;
         }
 
+        invalidate();
+    }
+
+    public void setIsCanSet(boolean isCanSet){
+        this.isCanSet = isCanSet;
     }
 }
