@@ -4,10 +4,12 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.tomduan.library.CircleSeekBar;
 
@@ -31,6 +33,8 @@ public class UsageActivity extends AppCompatActivity implements CircleSeekBar.Cl
     EditText leaveMessage;
     @Bind(R.id.isRest)
     CheckBox mIsRest;
+    @Bind(R.id.yes)
+    Button set;
 
     private boolean isFirst = true;
     private String startTime = "";
@@ -59,24 +63,57 @@ public class UsageActivity extends AppCompatActivity implements CircleSeekBar.Cl
         mSeekBar.setRangeWidth(18);
         mSeekBar.setStyle(CircleSeekBar.CLOCK);
         mSeekBar.build();
+
+        Toast.makeText(this, "Drag the slider to seek the start time.", Toast.LENGTH_SHORT).show();
+        leaveMessage.setEnabled(false);
     }
 
     @OnClick(R.id.yes)
     public void restart(){
         mSeekBar.setIsSetStart(false);
-        if(isFirst){
-            mSeekBar.initInvaildStartAngle();
-            isFirst = false;
-            startTime = mSeekBar.getCurrent();
+        if (isAddMessage){
+            if (!leaveMessage.getText().toString().equals("")){
+                messages.add(new Item(startTime,
+                        mSeekBar.getCurrent(),
+                        leaveMessage.getText().toString()));
+                startTime = mSeekBar.getCurrent();
+
+                isAddMessage = false;
+            }else {
+                Toast.makeText(this, "leave a message", Toast.LENGTH_SHORT).show();
+            }
         }else {
-            messages.add(new Item(startTime,
-                    mSeekBar.getCurrent(),
-                    leaveMessage.getText().toString()));
-            startTime = mSeekBar.getCurrent();
+            if (isFirst){
+                mSeekBar.initInvaildStartAngle();
+                isFirst = false;
+                startTime = mSeekBar.getCurrent();
+            }else {
+                isAddMessage = true;
+            }
         }
+
+
         mSeekBar.reSeek();
         leaveMessage.setText("");
         log.append(mSeekBar.getCurrent() + "\n");
+
+        leaveMessage.setEnabled(isAddMessage);
+        mSeekBar.setIsCanSet(!isAddMessage);
+        mIsRest.setEnabled(!isAddMessage);
+
+
+        if (mSeekBar.isCircle() && !isAddMessage){
+            Toast.makeText(this, "complete", Toast.LENGTH_SHORT).show();
+            set.setEnabled(false);
+        }else {
+            if (isAddMessage){
+                Toast.makeText(this, "add a message", Toast.LENGTH_SHORT).show();
+            }else {
+                Toast.makeText(this, "Drag the slider to seek the end time in this range.", Toast.LENGTH_SHORT).show();
+            }
+        }
+
+
     }
 
     @Override

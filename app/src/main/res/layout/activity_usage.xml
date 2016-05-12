@@ -43,7 +43,7 @@
                 android:id="@+id/yes"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="add"
+                android:text="set"
                 android:layout_below="@+id/message"/>
             <TextView
                 android:id="@+id/text_v"
