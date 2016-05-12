@@ -105,6 +105,7 @@ public class UsageActivity extends AppCompatActivity implements CircleSeekBar.Cl
         if (mSeekBar.isCircle() && !isAddMessage){
             Toast.makeText(this, "complete", Toast.LENGTH_SHORT).show();
             set.setEnabled(false);
+            mIsRest.setEnabled(false);
         }else {
             if (isAddMessage){
                 Toast.makeText(this, "add a message", Toast.LENGTH_SHORT).show();
