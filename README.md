@@ -3,9 +3,12 @@
 
 This is custom can set start circle seekbar.
 
-![](https://github.com/DuanTzXavier/conciseclock/blob/master/optimized.gif)
+![](https://github.com/DuanTzXavier/conciseclock/blob/master/gif/1.gif)
+![](https://github.com/DuanTzXavier/conciseclock/blob/master/gif/2.gif)
 
 ## Demo
+
+[Demo](https://github.com/DuanTzXavier/conciseclock/blob/master/app/src/main/java/com/tomduan/conciseclock/UsageActivity.java)
 
 ## Demand
 
@@ -41,3 +44,34 @@ This is custom can set start circle seekbar.
 ## Usage
 
 ### Gradle
+
+You can add gradle dependency with command :
+
+```
+compile 'com.tomduan.conciseclock:library:0.1.3'
+```
+
+### FastDemo
+
+1. add this in your xml:
+```
+            <com.tomduan.library.CircleSeekBar
+                android:id="@+id/circle_seek_bar"
+                android:layout_width="match_parent"
+                android:layout_height="200000dp"
+                android:layout_below="@+id/guide"
+                android:padding="8dp"/>
+```
+2. add this in your code:
+```
+        mSeekBar.setCircleColor(Color.BLUE);
+        mSeekBar.setPointerColor(Color.YELLOW);
+        mSeekBar.setInvaildColor(Color.GREEN);
+        mSeekBar.setSelectColor(Color.RED);
+        mSeekBar.setTextColor(Color.BLACK);
+        mSeekBar.setTextSize(50);
+        mSeekBar.setCircleWidth(32);
+        mSeekBar.setRangeWidth(18);
+        mSeekBar.setStyle(CircleSeekBar.CLOCK);
+        mSeekBar.build();
+```
