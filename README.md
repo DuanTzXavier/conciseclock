@@ -1,5 +1,6 @@
 # conciseclock
-![](https://img.shields.io/badge/gradle-v0.1-green.svg?style=flat-square)
+![](https://img.shields.io/badge/gradle-v0.13-green.svg?style=flat-square)
+
 
 This is custom can set start circle seekbar.
 
