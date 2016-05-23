@@ -8,6 +8,9 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.text.Layout;
+import android.text.StaticLayout;
+import android.text.TextPaint;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.util.TypedValue;
@@ -29,7 +32,7 @@ public class CircleSeekBar extends View {
     public static final int NUMBER = 0x0000000;
     public static final int CLOCK = 0x0000001;
 
-
+    private TextPaint textPaint;
 
     private OnSeekBarChangeListener mChangListener;
     private ClickListener clickListener;
@@ -149,6 +152,11 @@ public class CircleSeekBar extends View {
         mScalePaint.setStyle(Paint.Style.FILL_AND_STROKE);
         mScalePaint.setTextAlign(Paint.Align.CENTER);
         mScalePaint.setTextSize(20);
+
+        textPaint = new TextPaint();
+        textPaint.setColor(textColor);
+        textPaint.setTextSize(textSize);
+        textPaint.setAntiAlias(true);
     }
 
     @Override
@@ -185,12 +193,21 @@ public class CircleSeekBar extends View {
         mTextPaint.getTextBounds(text, 0, text.length(), bounds);
 
         if (showText){
-            canvas.drawText(
-                    text,
-                    getWidth()/2,
-                    getHeight()/2,
-                    mTextPaint);
+//            canvas.drawText(
+//                    text,
+//                    getWidth()/2,
+//                    getHeight()/2,
+//                    mTextPaint);
+
+            StaticLayout layout = new StaticLayout(text, textPaint, 500,
+                    Layout.Alignment.ALIGN_CENTER, 1.0F, 0.0F, true);
+
+            canvas.save();
+            canvas.translate(getWidth()/2 - 250, getHeight()/2 - textSize * (getSubString(text, "\n") + 1));//从20，20开始画
+            layout.draw(canvas);
+            canvas.restore();
         }
+
         String time;
 
         //绘制文字刻度
@@ -249,6 +266,16 @@ public class CircleSeekBar extends View {
         if (!isCircle() && isCanSet){
             canvas.drawCircle(mWheelCurX, mWheelCurY, mPointerRadius, mPointerPaint);
         }
+    }
+
+    public int  getSubString(String str,String key){
+        int count = 0;
+        int index = 0;
+        while((index=str.indexOf(key,index))!=-1){
+            index = index+key.length();
+            count++;
+        }
+        return count;
     }
 
     private void drawInvaildArc(Canvas canvas, RectF rectF) {

@@ -58,7 +58,7 @@ public class UsageActivity extends AppCompatActivity implements CircleSeekBar.Cl
         mSeekBar.setInvaildColor(Color.GREEN);
         mSeekBar.setSelectColor(Color.RED);
         mSeekBar.setTextColor(Color.BLACK);
-        mSeekBar.setTextSize(50);
+        mSeekBar.setTextSize(80);
         mSeekBar.setCircleWidth(32);
         mSeekBar.setRangeWidth(18);
         mSeekBar.setStyle(CircleSeekBar.CLOCK);
@@ -114,7 +114,6 @@ public class UsageActivity extends AppCompatActivity implements CircleSeekBar.Cl
             }
         }
 
-
     }
 
     @Override
@@ -130,6 +129,6 @@ public class UsageActivity extends AppCompatActivity implements CircleSeekBar.Cl
 
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-        mSeekBar.isRestWhole(isChecked);
+            mSeekBar.isRestWhole(isChecked);
     }
 }
