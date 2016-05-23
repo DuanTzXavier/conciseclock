@@ -48,14 +48,14 @@ This is custom can set start circle seekbar.
 
 You can add gradle dependency with command :
 
-```
-compile 'com.tomduan.conciseclock:library:0.1.3'
+```gradle
+compile 'com.tomduan.conciseclock:library:0.1.4'
 ```
 
 ### FastDemo
 
 1. add this in your xml:
-```
+```xml
             <com.tomduan.library.CircleSeekBar
                 android:id="@+id/circle_seek_bar"
                 android:layout_width="match_parent"
@@ -64,7 +64,7 @@ compile 'com.tomduan.conciseclock:library:0.1.3'
                 android:padding="8dp"/>
 ```
 2. add this in your code:
-```
+```java
         mSeekBar.setCircleColor(Color.BLUE);
         mSeekBar.setPointerColor(Color.YELLOW);
         mSeekBar.setInvaildColor(Color.GREEN);
