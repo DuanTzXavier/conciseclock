@@ -634,4 +634,20 @@ public class CircleSeekBar extends View {
     public void setIsCanSet(boolean isCanSet){
         this.isCanSet = isCanSet;
     }
+
+    public void setArcs(List<Arc> arcs){
+        this.arcs.clear();
+        this.arcs.addAll(arcs);
+
+        invalidate();
+    }
+
+    public List<Arc> getArcs(){
+        return arcs;
+    }
+
+    public void clear(){
+        arcs.clear();
+        invalidate();
+    }
 }

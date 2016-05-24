@@ -23,11 +23,21 @@
                 android:layout_height="wrap_content"
                 android:text="确认"
                 android:layout_below="@+id/circle_seek_bar"/>
+            <Button
+                android:id="@+id/re"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/yes"/>
+            <Button
+                android:id="@+id/set"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/re"/>
             <TextView
                 android:id="@+id/text_v"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_below="@+id/yes"/>
+                android:layout_below="@+id/set"/>
 
         </RelativeLayout>
 
