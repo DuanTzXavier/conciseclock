@@ -1,5 +1,5 @@
 # conciseclock
-![](https://img.shields.io/badge/gradle-v0.14-green.svg?style=flat-square)
+![](https://img.shields.io/badge/gradle-v0.16-green.svg?style=flat-square)
 
 
 This is custom can set start circle seekbar.
@@ -41,6 +41,9 @@ This is custom can set start circle seekbar.
 1. `setScaleUnit()`
 2. `setStyle(Style)`
 3. `installItems(List<Itme> items)`
+4. `remove(int position)`
+5. `clear()`
+6. `setArcs(List<Arc> arcs)`
 
 ## Usage
 
@@ -49,7 +52,7 @@ This is custom can set start circle seekbar.
 You can add gradle dependency with command :
 
 ```gradle
-compile 'com.tomduan.conciseclock:library:0.1.4'
+compile 'com.tomduan.conciseclock:library:0.1.6'
 ```
 
 ### FastDemo
