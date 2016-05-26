@@ -169,7 +169,7 @@ public class CircleSeekBar extends View {
     @Override
     protected void onDraw(Canvas canvas) {
 
-        float pointer = mPointerPosition == OUTSIDE ? getDpValue(mPointerRadius) : 0;
+        float pointer = mPointerPosition == OUTSIDE ? 2 * mPointerRadius : 0;
 
         float left = getPaddingLeft() + getDpValue(circleWidth) / 2 + pointer;
         float top = getPaddingTop() + getDpValue(circleWidth) / 2 + pointer;
@@ -348,7 +348,7 @@ public class CircleSeekBar extends View {
         if (isSetStart){
             double cos = -Math.cos(Math.toRadians(mSweepAngle));
             float radius = (getMeasuredWidth() - getPaddingLeft() - getPaddingRight() - getDpValue(circleWidth)) / 2;
-            radius = mPointerPosition == OUTSIDE ? radius - getDpValue(mPointerRadius) : radius;
+            radius = mPointerPosition == OUTSIDE ? radius - 2 * mPointerRadius : radius;
             changeWheelPosition(min, cos, radius);
         }
     }
@@ -425,7 +425,7 @@ public class CircleSeekBar extends View {
 
             if (isBlockEnd){
                 float radius = (getWidth() - getPaddingLeft() - getPaddingRight() - getDpValue(circleWidth)) / 2;
-                radius = mPointerPosition == OUTSIDE ? radius - getDpValue(mPointerRadius) : radius;
+                radius = mPointerPosition == OUTSIDE ? radius - 2 * mPointerRadius : radius;
                 changeWheelPosition(x, cos, radius);
 //                mWheelCurX = calcXLocationInWheel(x, cos, radius);
 //                mWheelCurY = calcYLocationInWheel(cos, radius);

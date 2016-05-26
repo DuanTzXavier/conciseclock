@@ -47,7 +47,7 @@ public class EditAcitvity extends AppCompatActivity implements CircleSeekBar.Cli
         mSeekBar.setCircleWidth(7);
         mSeekBar.setRangeWidth(18);
         mSeekBar.setStyle(CircleSeekBar.CLOCK);
-        mSeekBar.setmPointerPosition(CircleSeekBar.INSIDE);
+        mSeekBar.setmPointerPosition(CircleSeekBar.OUTSIDE);
         mSeekBar.setmPointerStyle(CircleSeekBar.CIRCLE);
         mSeekBar.build();
     }
