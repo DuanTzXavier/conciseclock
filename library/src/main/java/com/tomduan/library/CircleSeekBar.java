@@ -168,15 +168,17 @@ public class CircleSeekBar extends View {
 
     @Override
     protected void onDraw(Canvas canvas) {
-        float left = getPaddingLeft() + getDpValue(circleWidth) / 2;
-        float top = getPaddingTop() + getDpValue(circleWidth) / 2;
-        float right = canvas.getWidth() - getPaddingRight() - getDpValue(circleWidth) / 2;
-        float bottom = canvas.getHeight() - getPaddingBottom() - getDpValue(circleWidth) / 2;
+
+        float pointer = mPointerPosition == OUTSIDE ? getDpValue(mPointerRadius) : 0;
+
+        float left = getPaddingLeft() + getDpValue(circleWidth) / 2 + pointer;
+        float top = getPaddingTop() + getDpValue(circleWidth) / 2 + pointer;
+        float right = canvas.getWidth() - getPaddingRight() - getDpValue(circleWidth) / 2 - pointer;
+        float bottom = canvas.getHeight() - getPaddingBottom() - getDpValue(circleWidth) / 2 - pointer;
         float centerX = (left + right) / 2;
         float centerY = (top + bottom) / 2;
 
-        float wheelRadius = (canvas.getWidth() - getPaddingLeft() - getPaddingRight()) / 2 - getDpValue(circleWidth) / 2;
-//        wheelRadius = mPointerPosition == OUTSIDE ? wheelRadius - getDpValue(mPointerRadius) : wheelRadius;
+        float wheelRadius = (canvas.getWidth() - getPaddingLeft() - getPaddingRight()) / 2 - getDpValue(circleWidth) / 2 - pointer;
 
         canvas.drawCircle(centerX, centerY, wheelRadius, mCirclePaint);
 
@@ -243,10 +245,10 @@ public class CircleSeekBar extends View {
             paint.setColor(Color.BLACK);
             // 绘制间隔快
             canvas.drawArc(new RectF(
-                            getPaddingLeft() + getDpValue(circleWidth) + getDpValue(6)/2,
-                            getPaddingTop() + getDpValue(circleWidth) + getDpValue(6)/2,
-                            canvas.getWidth() - getPaddingRight() - getDpValue(circleWidth) - getDpValue(6)/2,
-                            canvas.getHeight() - getPaddingBottom() - getDpValue(circleWidth) - getDpValue(6)/2),
+                            getPaddingLeft() + getDpValue(circleWidth) + getDpValue(6)/2 + pointer,
+                            getPaddingTop() + getDpValue(circleWidth) + getDpValue(6)/2 + pointer,
+                            canvas.getWidth() - getPaddingRight() - getDpValue(circleWidth) - getDpValue(6)/2 - pointer,
+                            canvas.getHeight() - getPaddingBottom() - getDpValue(circleWidth) - getDpValue(6)/2 - pointer),
                     start + singlPoint - 0.3f,
                     0.3f,
                     false,
@@ -260,10 +262,10 @@ public class CircleSeekBar extends View {
             paint.setColor(Color.BLACK);
             // 绘制间隔快
             canvas.drawArc(new RectF(
-                            getPaddingLeft() + getDpValue(circleWidth) + getDpValue(10)/2,
-                            getPaddingTop() + getDpValue(circleWidth) + getDpValue(10)/2,
-                            canvas.getWidth() - getPaddingRight() - getDpValue(circleWidth) - getDpValue(10)/2,
-                            canvas.getHeight() - getPaddingBottom() - getDpValue(circleWidth) - getDpValue(10)/2),
+                            getPaddingLeft() + getDpValue(circleWidth) + getDpValue(10)/2 + pointer,
+                            getPaddingTop() + getDpValue(circleWidth) + getDpValue(10)/2 + pointer,
+                            canvas.getWidth() - getPaddingRight() - getDpValue(circleWidth) - getDpValue(10)/2 - pointer,
+                            canvas.getHeight() - getPaddingBottom() - getDpValue(circleWidth) - getDpValue(10)/2 - pointer),
                     start + singlPoint - 0.6f,
                     0.6f,
                     false,
@@ -346,6 +348,7 @@ public class CircleSeekBar extends View {
         if (isSetStart){
             double cos = -Math.cos(Math.toRadians(mSweepAngle));
             float radius = (getMeasuredWidth() - getPaddingLeft() - getPaddingRight() - getDpValue(circleWidth)) / 2;
+            radius = mPointerPosition == OUTSIDE ? radius - getDpValue(mPointerRadius) : radius;
             changeWheelPosition(min, cos, radius);
         }
     }
@@ -357,12 +360,12 @@ public class CircleSeekBar extends View {
                 mWheelCurY = calcYLocationInWheel((float) cos, radius);
                 break;
             case INSIDE:
-                radius = radius - mPointerRadius - getDpValue(circleWidth / 2);
+                radius = radius - mPointerRadius - getDpValue(circleWidth);
                 mWheelCurX = calcXLocationInWheel(mSweepAngle > 180 ? 0 : min, (float) cos, radius);
                 mWheelCurY = calcYLocationInWheel((float) cos, radius);
                 break;
             case OUTSIDE:
-                radius = radius + mPointerRadius + getDpValue(circleWidth / 2);
+                radius = radius + mPointerRadius + getDpValue(circleWidth);
                 mWheelCurX = calcXLocationInWheel(mSweepAngle > 180 ? 0 : min, (float) cos, radius);
                 mWheelCurY = calcYLocationInWheel((float) cos, radius);
                 break;
