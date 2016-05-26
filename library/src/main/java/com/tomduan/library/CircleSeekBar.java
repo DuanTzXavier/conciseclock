@@ -126,7 +126,6 @@ public class CircleSeekBar extends View {
     private void initPaint() {
         mCirclePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mCirclePaint.setColor(circleColor);
-
         mCirclePaint.setStrokeWidth(getDpValue(circleWidth));
         mCirclePaint.setStyle(Paint.Style.STROKE);
 
@@ -142,7 +141,8 @@ public class CircleSeekBar extends View {
 
         mPointerPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mPointerPaint.setColor(pointerColor);
-        mPointerPaint.setStyle(Paint.Style.FILL);
+        mPointerPaint.setStyle(mPointerStyle == CIRCLE ? Paint.Style.STROKE: Paint.Style.FILL);
+        mPointerPaint.setStrokeWidth(getDpValue(circleWidth));
         mPointerRadius = getDpValue(rangeWidth);
 
         mEdgePaint = new Paint(mSelectPaint);
@@ -691,5 +691,9 @@ public class CircleSeekBar extends View {
 
     public void setmPointerPosition(int style){
         this.mPointerPosition = style;
+    }
+
+    public void setmPointerStyle(int style){
+        this.mPointerStyle = style;
     }
 }
