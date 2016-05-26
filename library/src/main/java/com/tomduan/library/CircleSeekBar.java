@@ -87,8 +87,6 @@ public class CircleSeekBar extends View {
 
     private List<Arc> arcs = new ArrayList<>();
 
-    private List<Integer> colors = new ArrayList<>();
-
     private float tempCos = 0;
     private float tempX = 0;
 
@@ -280,14 +278,9 @@ public class CircleSeekBar extends View {
 
     private void drawInvaildArc(Canvas canvas, RectF rectF) {
 
-        if (colors.size() != arcs.size()){
-            Log.i("error", "color.size != arcs.size");
-            return;
-        }
-
         for (int i = 0;i < arcs.size();i++){
 
-            mInvaildPaint.setColor(colors.get(i));
+            mInvaildPaint.setColor(arcs.get(i).getColor());
 
             if (arcs.get(i).istouched()){
                 mInvaildPaint.setStrokeWidth(getDpValue((float) (rangeWidth * 1.5)));
@@ -561,9 +554,8 @@ public class CircleSeekBar extends View {
             isInvaild = true;
 
             if (mSweepAngle > 0){
-                arcs.add(new Arc(mStartAngle, mSweepAngle));
                 invaildColor = invaildColor - 101010;
-                colors.add(invaildColor);
+                arcs.add(new Arc(mStartAngle, mSweepAngle, invaildColor));
             }
         }
 
@@ -648,6 +640,16 @@ public class CircleSeekBar extends View {
 
     public void clear(){
         arcs.clear();
+        invalidate();
+    }
+
+    public void addArc(Arc arc){
+        arcs.add(arc);
+        invalidate();
+    }
+
+    public void deleteArc(int position){
+        arcs.remove(position);
         invalidate();
     }
 }

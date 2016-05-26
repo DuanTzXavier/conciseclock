@@ -8,11 +8,13 @@ public class Arc {
     private float startArc;
     private float sweepArc;
     private boolean istouched;
+    private int color;
 
-    public Arc(float startArc, float sweepArc) {
+    public Arc(float startArc, float sweepArc, int color) {
         this.startArc = startArc;
         this.sweepArc = sweepArc;
         this.istouched = false;
+        this.color = color;
     }
 
 
@@ -30,5 +32,17 @@ public class Arc {
 
     public void setIstouched(boolean is){
         this.istouched = is;
+    }
+
+    public int getColor() {
+        return color;
+    }
+
+    public void setStartArc(float startArc){
+        this.startArc = startArc;
+    }
+
+    public void setSweepArc(float sweepArc){
+        this.sweepArc = sweepArc;
     }
 }

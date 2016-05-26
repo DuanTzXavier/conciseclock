@@ -64,6 +64,7 @@ public class EditAcitvity extends AppCompatActivity implements CircleSeekBar.Cli
     public void re(){
         arcs.clear();
         arcs.addAll(mSeekBar.getArcs());
+        arcs.remove(arcs.size()-1);
         mSeekBar.clear();
     }
 
@@ -74,6 +75,8 @@ public class EditAcitvity extends AppCompatActivity implements CircleSeekBar.Cli
 
     @Override
     public void clicked(int position) {
-
+        if (mSeekBar.isCircle()){
+//            mSeekBar.deleteArc(position);
+        }
     }
 }
