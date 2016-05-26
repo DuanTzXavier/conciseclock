@@ -32,6 +32,12 @@ public class CircleSeekBar extends View {
     public static final int NUMBER = 0x0000000;
     public static final int CLOCK = 0x0000001;
 
+    public static final int RANGE = 0x0000002;
+    public static final int CIRCLE = 0x0000003;
+    public static final int INSIDE = 0x0000004;
+    public static final int OUTSIDE = 0x0000005;
+    public static final int ON_THE_CIRCLE = 0x0000006;
+
     private TextPaint textPaint;
 
     private OnSeekBarChangeListener mChangListener;
@@ -91,6 +97,9 @@ public class CircleSeekBar extends View {
     private float tempX = 0;
 
     private float lastAngle = 0;
+
+    private int mPointerStyle = RANGE;
+    private int mPointerPosition = ON_THE_CIRCLE;
 
     public CircleSeekBar(Context context) {
         this(context, null);
@@ -167,6 +176,7 @@ public class CircleSeekBar extends View {
         float centerY = (top + bottom) / 2;
 
         float wheelRadius = (canvas.getWidth() - getPaddingLeft() - getPaddingRight()) / 2 - getDpValue(circleWidth) / 2;
+//        wheelRadius = mPointerPosition == OUTSIDE ? wheelRadius - getDpValue(mPointerRadius) : wheelRadius;
 
         canvas.drawCircle(centerX, centerY, wheelRadius, mCirclePaint);
 
@@ -262,6 +272,7 @@ public class CircleSeekBar extends View {
         }
 
         if (!isCircle() && isCanSet){
+
             canvas.drawCircle(mWheelCurX, mWheelCurY, mPointerRadius, mPointerPaint);
         }
     }
@@ -335,8 +346,30 @@ public class CircleSeekBar extends View {
         if (isSetStart){
             double cos = -Math.cos(Math.toRadians(mSweepAngle));
             float radius = (getMeasuredWidth() - getPaddingLeft() - getPaddingRight() - getDpValue(circleWidth)) / 2;
-            mWheelCurX = calcXLocationInWheel(mSweepAngle > 180 ? 0 : min, (float) cos, radius);
-            mWheelCurY = calcYLocationInWheel((float) cos, radius);
+            changeWheelPosition(min, cos, radius);
+        }
+    }
+
+    private void changeWheelPosition(float min, double cos, float radius) {
+        switch (mPointerPosition){
+            case ON_THE_CIRCLE:
+                mWheelCurX = calcXLocationInWheel(mSweepAngle > 180 ? 0 : min, (float) cos, radius);
+                mWheelCurY = calcYLocationInWheel((float) cos, radius);
+                break;
+            case INSIDE:
+                radius = radius - mPointerRadius - getDpValue(circleWidth / 2);
+                mWheelCurX = calcXLocationInWheel(mSweepAngle > 180 ? 0 : min, (float) cos, radius);
+                mWheelCurY = calcYLocationInWheel((float) cos, radius);
+                break;
+            case OUTSIDE:
+                radius = radius + mPointerRadius + getDpValue(circleWidth / 2);
+                mWheelCurX = calcXLocationInWheel(mSweepAngle > 180 ? 0 : min, (float) cos, radius);
+                mWheelCurY = calcYLocationInWheel((float) cos, radius);
+                break;
+            default:
+                mWheelCurX = calcXLocationInWheel(mSweepAngle > 180 ? 0 : min, (float) cos, radius);
+                mWheelCurY = calcYLocationInWheel((float) cos, radius);
+                break;
         }
     }
 
@@ -389,15 +422,18 @@ public class CircleSeekBar extends View {
 
             if (isBlockEnd){
                 float radius = (getWidth() - getPaddingLeft() - getPaddingRight() - getDpValue(circleWidth)) / 2;
-                mWheelCurX = calcXLocationInWheel(x, cos, radius);
-                mWheelCurY = calcYLocationInWheel(cos, radius);
+                radius = mPointerPosition == OUTSIDE ? radius - getDpValue(mPointerRadius) : radius;
+                changeWheelPosition(x, cos, radius);
+//                mWheelCurX = calcXLocationInWheel(x, cos, radius);
+//                mWheelCurY = calcYLocationInWheel(cos, radius);
 
                 text = isCircle() ? "complete" : getCurrent();
             }else {
                 cos = (float) (isEnd ? -Math.cos(Math.toRadians(mInvaildStartAngle)) : -Math.cos(Math.toRadians(mStartAngle)));
                 float radius = (getWidth() - getPaddingLeft() - getPaddingRight() - getDpValue(circleWidth)) / 2;
-                mWheelCurX = calcXLocationInWheel(getmAbsloutaleAngle() > 180 ? 0 : x, cos, radius);//考虑不完全
-                mWheelCurY = calcYLocationInWheel(cos, radius);
+                changeWheelPosition(x, cos, radius);
+//                mWheelCurX = calcXLocationInWheel(getmAbsloutaleAngle() > 180 ? 0 : x, cos, radius);//考虑不完全
+//                mWheelCurY = calcYLocationInWheel(cos, radius);
                 Log.i("true", "" + mWheelCurX + ", " + mWheelCurY + ", " + getMeasuredWidth());
                 //bug :右半球 mX变成左半球的mX
             }
@@ -651,5 +687,9 @@ public class CircleSeekBar extends View {
     public void deleteArc(int position){
         arcs.remove(position);
         invalidate();
+    }
+
+    public void setmPointerPosition(int style){
+        this.mPointerPosition = style;
     }
 }
