@@ -131,12 +131,12 @@ public class CircleSeekBar extends View {
 
         mInvaildPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mInvaildPaint.setColor(invaildColor);
-        mInvaildPaint.setStrokeWidth(getDpValue(rangeWidth));
+        mInvaildPaint.setStrokeWidth(getDpValue(circleWidth));
         mInvaildPaint.setStyle(Paint.Style.STROKE);
 
         mSelectPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mSelectPaint.setColor(selectColor);
-        mSelectPaint.setStrokeWidth(getDpValue(rangeWidth));
+        mSelectPaint.setStrokeWidth(getDpValue(circleWidth));
         mSelectPaint.setStyle(Paint.Style.STROKE);
 
         mPointerPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
@@ -296,9 +296,9 @@ public class CircleSeekBar extends View {
             mInvaildPaint.setColor(arcs.get(i).getColor());
 
             if (arcs.get(i).istouched()){
-                mInvaildPaint.setStrokeWidth(getDpValue((float) (rangeWidth * 1.5)));
+                mInvaildPaint.setStrokeWidth(getDpValue((float) (circleWidth * 1.5)));
             }else {
-                mInvaildPaint.setStrokeWidth(getDpValue(rangeWidth));
+                mInvaildPaint.setStrokeWidth(getDpValue(circleWidth));
             }
 
 
