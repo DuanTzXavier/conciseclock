@@ -366,6 +366,7 @@ public class CircleSeekBar extends View {
                 break;
             case OUTSIDE:
                 radius = radius + mPointerRadius + getDpValue(circleWidth);
+                Log.i("radius:", radius + "");
                 mWheelCurX = calcXLocationInWheel(mSweepAngle > 180 ? 0 : min, (float) cos, radius);
                 mWheelCurY = calcYLocationInWheel((float) cos, radius);
                 break;
@@ -434,6 +435,7 @@ public class CircleSeekBar extends View {
             }else {
                 cos = (float) (isEnd ? -Math.cos(Math.toRadians(mInvaildStartAngle)) : -Math.cos(Math.toRadians(mStartAngle)));
                 float radius = (getWidth() - getPaddingLeft() - getPaddingRight() - getDpValue(circleWidth)) / 2;
+                radius = mPointerPosition == OUTSIDE ? radius - 2 * mPointerRadius : radius;
                 changeWheelPosition(x, cos, radius);
 //                mWheelCurX = calcXLocationInWheel(getmAbsloutaleAngle() > 180 ? 0 : x, cos, radius);//考虑不完全
 //                mWheelCurY = calcYLocationInWheel(cos, radius);
