@@ -379,9 +379,13 @@ public class CircleSeekBar extends View {
 
     private float calcXLocationInWheel(float x, float cos, float radius) {
         if (x > (getMeasuredWidth() / 2)) {
-            return (float) (getWidth() / 2 + Math.sqrt(1 - cos * cos) * radius);
+            return (float)(getmAbsloutaleAngle() < 180 ?
+                    (getWidth() / 2 + Math.sqrt(1 - cos * cos) * radius) :
+                    (getWidth() / 2 - Math.sqrt(1 - cos * cos) * radius));
         } else {
-            return (float) (getWidth() / 2 - Math.sqrt(1 - cos * cos) * radius);
+            return (float)(getmAbsloutaleAngle() < 180 ?
+                    (getWidth() / 2 + Math.sqrt(1 - cos * cos) * radius) :
+                    (getWidth() / 2 - Math.sqrt(1 - cos * cos) * radius));
         }
     }
 
@@ -420,6 +424,8 @@ public class CircleSeekBar extends View {
             }else {
                 mSweepAngle = calculateSweep(cos, x);
             }
+
+//            Log.i("abs", getmAbsloutaleAngle() + "");
 
             mCurrentNumber = getSelectedValue();
 
