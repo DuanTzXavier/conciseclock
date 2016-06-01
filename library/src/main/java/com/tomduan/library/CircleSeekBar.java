@@ -399,6 +399,11 @@ public class CircleSeekBar extends View {
         float x = event.getX();
         float y = event.getY();
 
+        float cos = computeCos(x, y);// 通过反三角函数获得角度值
+
+        tempCos = cos;
+        tempX = x;
+
         for (int i = 0;i < arcs.size();i++){
             if (checkIsOnTouchArc(arcs.get(i))){
                 arcs.get(i).setIstouched(true);
@@ -411,10 +416,7 @@ public class CircleSeekBar extends View {
         }
 
         if ((event.getAction() == MotionEvent.ACTION_MOVE || isTouch(x, y)) && isCanSet) {// 通过当前触摸点搞到cos角度值
-            float cos = computeCos(x, y);// 通过反三角函数获得角度值
 
-            tempCos = cos;
-            tempX = x;
 
             if (isSetStart){
                 if (x < getWidth() / 2) {// 滑动超过180度,左半圆
@@ -447,6 +449,7 @@ public class CircleSeekBar extends View {
             invalidate();
             return true;
         } else {
+            invalidate();
             return super.onTouchEvent(event);
         }
     }
