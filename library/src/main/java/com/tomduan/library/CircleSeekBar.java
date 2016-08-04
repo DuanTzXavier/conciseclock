@@ -317,7 +317,7 @@ public class CircleSeekBar extends View {
 
         start = start > 360 ? start - 360 : start;
 
-        Log.i("sss", ""+ start + "  " + sweep);
+//        Log.i("sss", ""+ start + "  " + sweep);
 
         if (start + sweep > 360){
             if (ontouch > start || ontouch < start + sweep - 360){
@@ -366,7 +366,7 @@ public class CircleSeekBar extends View {
                 break;
             case OUTSIDE:
                 radius = radius + mPointerRadius + getDpValue(circleWidth);
-                Log.i("radius:", radius + "");
+//                Log.i("radius:", radius + "");
                 mWheelCurX = calcXLocationInWheel(mSweepAngle > 180 ? 0 : min, (float) cos, radius);
                 mWheelCurY = calcYLocationInWheel((float) cos, radius);
                 break;
